@@ -18,5 +18,6 @@ setup(
     install_requires=["pandas", "pybox", "pydb"],
     test_suite="nose.collector",
     tests_require=["nose"],
+    include_package_data=True,
     zip_safe=False,
 )
