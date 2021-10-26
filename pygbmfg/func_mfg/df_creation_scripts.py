@@ -1,5 +1,5 @@
 from pybox import get_box_client, box_ls, box_parse_excel
-from pygbmfg import func_mfg_file_reading_scripts
+from pygbmfg import func_mfg
 import pandas as pd
 
 
@@ -27,7 +27,7 @@ def get_maverick_data(last_modified_date, mav_folder_id="110045466676"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_mfg_file_reading_scripts.read_maverick_func_br,
+                    parsing_func=func_mfg.file_reading_scripts.read_maverick_br,
                 )
             )
 
@@ -68,7 +68,7 @@ def get_vdj_data(last_modified_date, mav_folder_id="110046232258"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_mfg_file_reading_scripts.read_vdj_func_br,
+                    parsing_func=func_mfg.file_reading_scripts.read_vdj_br,
                 )
             )
         dfs2 = dfs2.dropna(subset=["wo", "ln"])
@@ -104,7 +104,7 @@ def get_5hv_data(last_modified_date, mav_folder_id="110046232258"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_mfg_file_reading_scripts.read_5hv_func_br,
+                    parsing_func=func_mfg.file_reading_scripts.read_5hv_br,
                 )
             )
         dfs2 = dfs2.dropna(subset=["wo", "ln"])
@@ -140,7 +140,7 @@ def get_3hv_data(last_modified_date, mav_folder_id="110045466676"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_mfg_file_reading_scripts.read_3hv_func_br,
+                    parsing_func=func_mfg.file_reading_scripts.read_3hv_br,
                 )
             )
         dfs2 = dfs2.dropna(subset=["wo", "ln"])
@@ -176,7 +176,7 @@ def get_orion_data(last_modified_date, mav_folder_id="110057176461"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_mfg_file_reading_scripts.read_orion_func_br,
+                    parsing_func=func_mfg.file_reading_scripts.read_orion_br,
                 )
             )
         dfs2 = dfs2.dropna(subset=["wo", "ln"])
@@ -212,7 +212,7 @@ def get_agora_data(last_modified_date, mav_folder_id="110057752779"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_mfg_file_reading_scripts.read_agora_func_br,
+                    parsing_func=func_mfg.file_reading_scripts.read_agora_br,
                 )
             )
         dfs2 = dfs2.dropna(subset=["wo", "ln"])

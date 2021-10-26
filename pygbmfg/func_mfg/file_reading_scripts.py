@@ -1,7 +1,7 @@
 import pandas as pd
 
 ### Maverick ------------
-def read_maverick_func_br(file):
+def read_maverick_br(file):
     try:
         xlsx = pd.ExcelFile(file, engine="openpyxl")
         # Extracting WO's
@@ -159,7 +159,7 @@ def read_maverick_func_br(file):
 
 
 ### VDJ ------------
-def read_vdj_func_br(file):
+def read_vdj_br(file):
     try:
         xlsx = pd.ExcelFile(file, engine="openpyxl")
         # Extracting WO's
@@ -323,7 +323,7 @@ def read_vdj_func_br(file):
 
 
 ### 5HV ------------
-def read_5hv_func_br(file):
+def read_5hv_br(file):
     try:
         xlsx = pd.ExcelFile(file, engine="openpyxl")
         # Extracting WO's
@@ -527,7 +527,7 @@ def read_5hv_func_br(file):
 
 
 ### 3HV ------------
-def read_3hv_func_br(file):
+def read_3hv_br(file):
     try:
         xlsx = pd.ExcelFile(file, engine="openpyxl")
         # Extracting WO's
@@ -731,7 +731,7 @@ def read_3hv_func_br(file):
 
 
 ### Orion ------------
-def read_orion_func_br(file):
+def read_orion_br(file):
     try:
         xlsx = pd.ExcelFile(file, engine="openpyxl")
         # Extracting WO's
@@ -907,7 +907,7 @@ def read_orion_func_br(file):
 
 
 ### Agora ------------
-def read_agora_func_br(file):
+def read_agora_br(file):
     try:
         xlsx = pd.ExcelFile(file, engine="openpyxl")
         # Extracting WO's

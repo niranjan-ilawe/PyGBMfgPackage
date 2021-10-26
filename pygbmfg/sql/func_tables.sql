@@ -1,4 +1,6 @@
 create schema gbmfg;
+
+-- MFG DATA TABLE
 drop table if exists gbmfg.func_mfgdata;
 create table gbmfg.func_mfgdata (
 	pn int null,
@@ -20,4 +22,20 @@ create table gbmfg.func_mfgdata (
 	total_lig1_vol numeric(12,4) null,
 	total_lig2_vol numeric(12,4) null,
 	final_vol numeric(12,4) null
+);
+
+-- DIVVAR DATA TABLE
+
+drop table if exists gbmfg.func_divvar_data;
+
+CREATE TABLE gbmfg.func_divvar_data (
+	pn varchar(20) NOT NULL,
+	"ln" varchar(50) NOT NULL,
+	wo varchar(50) NOT NULL,
+	"date" varchar(20) NOT NULL,
+	overhang varchar(10) NULL,
+	"family" varchar(30) NULL,
+	data_name varchar(100) NOT NULL,
+	data_value float4 NULL,
+	disposition varchar(10) NULL
 );

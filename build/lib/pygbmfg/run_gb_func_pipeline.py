@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from pygbmfg import func_mfg_df_creation_scripts
 from pygbmfg import func_mfg_db_upload_scripts
+from pygbmfg import func_qc
 
 
 def run_gb_func_pipeline(days=3):
@@ -78,3 +79,7 @@ def run_gb_func_pipeline(days=3):
         print("--Agora upload done")
     except:
         print("Agora data upload failed")
+
+    df7 = func_qc.get_func_qc_gsheet_data.get_func_qc_gsheet_data()
+
+    return df7
