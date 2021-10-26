@@ -3,24 +3,50 @@ pygbmfg
 ``v0.1``
 
 Package contains all the relevant scripts to pull manufacturing and QC data from all the GB Manufacturing process areas. 
-The flagship functions of this package are the ``run_*_pipeline`` scripts that will read the files from Box, transform them into dataframes,
+The flagship functions of this package are the ``run_pipeline`` scripts that will read the files from Box or relevant locations, transform them into dataframes,
 and push the dataframes to the CPPDA postgres database.
 
-Basic use is as follows
+The scripts are structured in the following way
+
+pygbmfg
+    * func_mfg
+        - file_reading_scripts
+        - df_creation_scripts
+        - db_upload_scripts
+        - run_pipeline
+    * func_qc
+        - file_reading_scripts
+        - df_creation_scripts
+        - db_upload_scripts
+        - run_pipeline
+    * disp_mfg
+        - file_reading_scripts
+
+and so on for other areas.
+
+Basic use is as follows (for the GB Functionalization Manufacturing Data)
 
     >>> import pygbmfg
-    >>> pygbmfg.run_gb_func_pipeline()
+    >>> pygbmfg.func_mfg.run_pipeline.run_pipeline(days=3)
 
 This defaults to pulling the last 3 days worth of data. For pulling older data
 
-    >>> pygbmfg.run_gb_func_pipeline(days=90)
+    >>> pygbmfg.func_mfg.run_pipeline.run_pipeline(days=90)
 
 pulls the last 90 days worth of data.
 
-If you want to push data to a different database or download to a file. Utilize the other functions defined in the package
+Similarly for the Gb Functionalization QC Data
 
-    >>> df1 = get_maverick_data(last_modified_date=last_modified_date)
-    >>> upload_func_data(df1, username="cpdda", db_name="test")
+    >>> pygbmfg.func_qc.run_pipeline.run_pipeline(days=90)
+
+For the GB Dispensing QC Data
+
+    >>> pygbmfg.disp_qc.run_pipeline.run_pipeline(days=90)
+
+You can also use any other function defined in the package directly
+
+    >>> df1 = pygbmfg.func_mfg.df_creation_scripts.get_maverick_data(last_modified_date="2021-01-01")
+    >>> pygbmfg.func_mfg.db_upload_scripts.upload_data(df1, username="cpdda", db_name="test")
 
 Notes::
 ~~~~~~~~~~~~~
