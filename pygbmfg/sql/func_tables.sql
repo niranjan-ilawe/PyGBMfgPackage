@@ -37,5 +37,20 @@ CREATE TABLE gbmfg.func_divvar_data (
 	"family" varchar(30) NULL,
 	data_name varchar(100) NOT NULL,
 	data_value float4 NULL,
-	disposition varchar(10) NULL
+	disposition varchar(30) NULL
+);
+
+-- FLOWCAM DATA TABLE
+
+drop table if exists gbmfg.func_flowcam_data;
+
+CREATE TABLE gbmfg.func_flowcam_data (
+	pn varchar(20) NOT NULL,
+	"ln" varchar(50) NOT NULL,
+	wo varchar(50) NOT NULL,
+	"date" varchar(20) NOT NULL,
+	overhang varchar(10) NULL,
+	"family" varchar(30) NULL,
+	data_name varchar(100) NOT NULL,
+	data_value float4 NULL
 );

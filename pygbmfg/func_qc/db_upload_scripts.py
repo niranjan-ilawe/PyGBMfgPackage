@@ -14,3 +14,17 @@ def upload_divvar_data(dfs, username="cpdda", db_name="cpdda"):
 
     res = batch_upload_df(conn=conn, df=dfs, tablename="gbmfg.func_divvar_data")
     conn.commit()
+
+
+def upload_flowcam_data(dfs, username="cpdda", db_name="cpdda"):
+    conn = get_postgres_connection(
+        service_name="cpdda-postgres", username=username, db_name=db_name
+    )
+
+    cur = conn.cursor()
+    new_wo = tuple(dfs.wo.unique().astype(str))
+    cur.execute(f"DELETE FROM gbmfg.func_flowcam_data WHERE wo IN {new_wo};")
+    conn.commit()
+
+    res = batch_upload_df(conn=conn, df=dfs, tablename="gbmfg.func_flowcam_data")
+    conn.commit()

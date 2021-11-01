@@ -6,28 +6,100 @@ def run_pipeline(days=3):
 
     last_modified_date = str(date.today() - timedelta(days=days))
 
-    # get mav divvar data
-    df = func_qc.df_creation_scripts.get_mav_divvar_data(
-        last_modified_date=last_modified_date
-    )
-
+    # get maverick divvar data
     try:
         print("Trying to upload Maverick DivVar data")
-        func_qc.db_upload_scripts.upload_divvar_data(dfs=df)
+        func_qc.db_upload_scripts.upload_divvar_data(
+            dfs=func_qc.df_creation_scripts.get_mav_divvar_data(
+                last_modified_date=last_modified_date
+            )
+        )
         print("--Maverick DivVar upload done")
     except:
         print("Maverick DivVar data upload failed")
 
     # get vdj divvar data
-    df1 = func_qc.df_creation_scripts.get_vdj_divvar_data(
-        last_modified_date=last_modified_date
-    )
-
     try:
         print("Trying to upload VDJ DivVar data")
-        func_qc.db_upload_scripts.upload_divvar_data(dfs=df1)
+        func_qc.db_upload_scripts.upload_divvar_data(
+            dfs=func_qc.df_creation_scripts.get_vdj_divvar_data(
+                last_modified_date=last_modified_date
+            )
+        )
         print("--VDJ DivVar upload done")
     except:
         print("VDJ DivVar data upload failed")
+
+    # get orion divvar data
+    try:
+        print("Trying to upload Orion DivVar data")
+        func_qc.db_upload_scripts.upload_divvar_data(
+            dfs=func_qc.df_creation_scripts.get_orion_divvar_data(
+                last_modified_date=last_modified_date
+            )
+        )
+        print("--Orion DivVar upload done")
+    except:
+        print("Orion DivVar data upload failed")
+
+    # get agora divvar data
+    try:
+        print("Trying to upload Agora DivVar data")
+        func_qc.db_upload_scripts.upload_divvar_data(
+            dfs=func_qc.df_creation_scripts.get_agora_divvar_data(
+                last_modified_date=last_modified_date
+            )
+        )
+        print("--Agora DivVar upload done")
+    except:
+        print("Agora DivVar data upload failed")
+
+    # get maverick flowcam data
+    try:
+        print("Trying to upload Maverick Flowcam data")
+        func_qc.db_upload_scripts.upload_divvar_data(
+            dfs=func_qc.df_creation_scripts.get_flowcam_data(
+                last_modified_date=last_modified_date, folder_id="112743475504"
+            )
+        )
+        print("--Maverick Flowcam upload done")
+    except:
+        print("Maverick Flowcam data upload failed")
+
+    # get VDJ flowcam data
+    try:
+        print("Trying to upload VDJ Flowcam data")
+        func_qc.db_upload_scripts.upload_divvar_data(
+            dfs=func_qc.df_creation_scripts.get_flowcam_data(
+                last_modified_date=last_modified_date, folder_id="112736689427"
+            )
+        )
+        print("--VDJ Flowcam upload done")
+    except:
+        print("VDJ Flowcam data upload failed")
+
+    # get orion flowcam data
+    try:
+        print("Trying to upload Orion Flowcam data")
+        func_qc.db_upload_scripts.upload_divvar_data(
+            dfs=func_qc.df_creation_scripts.get_flowcam_data(
+                last_modified_date=last_modified_date, folder_id="112528373429"
+            )
+        )
+        print("--Orion Flowcam upload done")
+    except:
+        print("Orion Flowcam data upload failed")
+
+    # get agora flowcam data
+    try:
+        print("Trying to upload Agora Flowcam data")
+        func_qc.db_upload_scripts.upload_divvar_data(
+            dfs=func_qc.df_creation_scripts.get_flowcam_data(
+                last_modified_date=last_modified_date, folder_id="121309822366"
+            )
+        )
+        print("--Agora Flowcam upload done")
+    except:
+        print("Agora Flowcam data upload failed")
 
     return 0

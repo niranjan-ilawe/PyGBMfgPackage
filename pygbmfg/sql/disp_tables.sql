@@ -33,3 +33,24 @@ create table gbmfg.disp_hsv_data (
 	small_clump_count numeric(12,4) null,
 	local_noise_cv numeric(12,4) null
 );
+
+drop table if exists gbmfg.disp_mfgdata;
+create table gbmfg.disp_mfgdata (
+	pn varchar(20) null,
+	pn_desc varchar(50) null,
+	wo varchar(20) null,
+	ln varchar(12) null,
+	mfg_area varchar(30) null,
+	mfg_process varchar(30) null,
+	mfg_site varchar(10) null,
+	mfg_date varchar(30) null,
+	planned_qty numeric(12,4) null,
+	qty_to_inventory numeric(12,4) null,
+	mfg_qty numeric(12,4) null,
+	scrap_qty numeric(12,4) null,
+	prod_retain_qty numeric(12,4) null,
+	qc_retain_qty numeric(12,4) null,
+	addn_testing_qty numeric(12,4) null,
+	gb_vol_for_dispense numeric(12,4) null,
+	gb_vol_for_packaging numeric(12,4) null
+);
