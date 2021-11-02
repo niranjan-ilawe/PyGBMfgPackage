@@ -1,6 +1,8 @@
 from pybox import get_box_client, box_ls, box_parse_excel
-from pygbmfg import func_qc
+
 import pandas as pd
+
+from pygbmfg.func_qc import file_reading_scripts
 
 
 def get_flowcam_data(last_modified_date, folder_id):
@@ -25,7 +27,7 @@ def get_flowcam_data(last_modified_date, folder_id):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_qc.file_reading_scripts.read_flowcam_file,
+                    parsing_func=file_reading_scripts.read_flowcam_file,
                 )
             )
 
@@ -57,7 +59,7 @@ def get_mav_divvar_data(last_modified_date, folder_id="112743475504"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_qc.file_reading_scripts.read_mav_divvar_file,
+                    parsing_func=file_reading_scripts.read_mav_divvar_file,
                 )
             )
 
@@ -89,7 +91,7 @@ def get_vdj_divvar_data(last_modified_date, folder_id="112736689427"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_qc.file_reading_scripts.read_vdj_divvar_file_revJ,
+                    parsing_func=file_reading_scripts.read_vdj_divvar_file_revJ,
                 )
             )
 
@@ -102,7 +104,7 @@ def get_vdj_divvar_data(last_modified_date, folder_id="112736689427"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_qc.file_reading_scripts.read_vdj_divvar_file_revL,
+                    parsing_func=file_reading_scripts.read_vdj_divvar_file_revL,
                 )
             )
 
@@ -136,7 +138,7 @@ def get_orion_divvar_data(last_modified_date, folder_id="112528373429"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_qc.file_reading_scripts.read_orion_divvar_file_revB,
+                    parsing_func=file_reading_scripts.read_orion_divvar_file_revB,
                 )
             )
 
@@ -168,7 +170,7 @@ def get_agora_divvar_data(last_modified_date, folder_id="121309822366"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=func_qc.file_reading_scripts.read_agora_divvar_file_revB,
+                    parsing_func=file_reading_scripts.read_agora_divvar_file_revB,
                 )
             )
 

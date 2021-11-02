@@ -1,6 +1,8 @@
 from pybox import get_box_client, box_ls, box_parse_excel
-from pygbmfg import disp_mfg
+
 import pandas as pd
+
+from pygbmfg.disp_mfg import file_reading_scripts
 
 
 def get_maverick_data(last_modified_date, mav_folder_id="110045548381"):
@@ -27,7 +29,7 @@ def get_maverick_data(last_modified_date, mav_folder_id="110045548381"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_mav_br_revD,
+                    parsing_func=file_reading_scripts.read_mav_br_revD,
                 )
             )
 
@@ -40,7 +42,7 @@ def get_maverick_data(last_modified_date, mav_folder_id="110045548381"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_mav_br_revE,
+                    parsing_func=file_reading_scripts.read_mav_br_revE,
                 )
             )
 
@@ -53,7 +55,7 @@ def get_maverick_data(last_modified_date, mav_folder_id="110045548381"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_mav_br_revF,
+                    parsing_func=file_reading_scripts.read_mav_br_revF,
                 )
             )
 
@@ -93,7 +95,7 @@ def get_vdj_data(last_modified_date, mav_folder_id="110047069633"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_vdj_br_revD,
+                    parsing_func=file_reading_scripts.read_vdj_br_revD,
                 )
             )
 
@@ -106,7 +108,7 @@ def get_vdj_data(last_modified_date, mav_folder_id="110047069633"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_vdj_br_revE,
+                    parsing_func=file_reading_scripts.read_vdj_br_revE,
                 )
             )
 
@@ -146,7 +148,7 @@ def get_orion_data(last_modified_date, mav_folder_id="110058190356"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_orion_br_revD,
+                    parsing_func=file_reading_scripts.read_orion_br_revD,
                 )
             )
 
@@ -159,7 +161,7 @@ def get_orion_data(last_modified_date, mav_folder_id="110058190356"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_orion_br_revC,
+                    parsing_func=file_reading_scripts.read_orion_br_revC,
                 )
             )
 
@@ -199,7 +201,7 @@ def get_agora_data(last_modified_date, mav_folder_id="120705401637"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_agora_br_revD,
+                    parsing_func=file_reading_scripts.read_agora_br_revD,
                 )
             )
 
@@ -212,7 +214,7 @@ def get_agora_data(last_modified_date, mav_folder_id="120705401637"):
                 box_parse_excel(
                     client=client,
                     file_id=file_id,
-                    parsing_func=disp_mfg.file_reading_scripts.read_agora_br_revB,
+                    parsing_func=file_reading_scripts.read_agora_br_revB,
                 )
             )
 

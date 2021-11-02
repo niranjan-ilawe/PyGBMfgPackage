@@ -1,5 +1,6 @@
 from datetime import date, timedelta
-from pygbmfg import func_qc
+
+from pygbmfg.func_qc import df_creation_scripts, db_upload_scripts
 
 
 def run_pipeline(days=3):
@@ -9,8 +10,8 @@ def run_pipeline(days=3):
     # get maverick divvar data
     try:
         print("Trying to upload Maverick DivVar data")
-        func_qc.db_upload_scripts.upload_divvar_data(
-            dfs=func_qc.df_creation_scripts.get_mav_divvar_data(
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_mav_divvar_data(
                 last_modified_date=last_modified_date
             )
         )
@@ -21,8 +22,8 @@ def run_pipeline(days=3):
     # get vdj divvar data
     try:
         print("Trying to upload VDJ DivVar data")
-        func_qc.db_upload_scripts.upload_divvar_data(
-            dfs=func_qc.df_creation_scripts.get_vdj_divvar_data(
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_vdj_divvar_data(
                 last_modified_date=last_modified_date
             )
         )
@@ -33,8 +34,8 @@ def run_pipeline(days=3):
     # get orion divvar data
     try:
         print("Trying to upload Orion DivVar data")
-        func_qc.db_upload_scripts.upload_divvar_data(
-            dfs=func_qc.df_creation_scripts.get_orion_divvar_data(
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_orion_divvar_data(
                 last_modified_date=last_modified_date
             )
         )
@@ -45,8 +46,8 @@ def run_pipeline(days=3):
     # get agora divvar data
     try:
         print("Trying to upload Agora DivVar data")
-        func_qc.db_upload_scripts.upload_divvar_data(
-            dfs=func_qc.df_creation_scripts.get_agora_divvar_data(
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_agora_divvar_data(
                 last_modified_date=last_modified_date
             )
         )
@@ -57,8 +58,8 @@ def run_pipeline(days=3):
     # get maverick flowcam data
     try:
         print("Trying to upload Maverick Flowcam data")
-        func_qc.db_upload_scripts.upload_divvar_data(
-            dfs=func_qc.df_creation_scripts.get_flowcam_data(
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_flowcam_data(
                 last_modified_date=last_modified_date, folder_id="112743475504"
             )
         )
@@ -69,8 +70,8 @@ def run_pipeline(days=3):
     # get VDJ flowcam data
     try:
         print("Trying to upload VDJ Flowcam data")
-        func_qc.db_upload_scripts.upload_divvar_data(
-            dfs=func_qc.df_creation_scripts.get_flowcam_data(
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_flowcam_data(
                 last_modified_date=last_modified_date, folder_id="112736689427"
             )
         )
@@ -81,8 +82,8 @@ def run_pipeline(days=3):
     # get orion flowcam data
     try:
         print("Trying to upload Orion Flowcam data")
-        func_qc.db_upload_scripts.upload_divvar_data(
-            dfs=func_qc.df_creation_scripts.get_flowcam_data(
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_flowcam_data(
                 last_modified_date=last_modified_date, folder_id="112528373429"
             )
         )
@@ -93,8 +94,8 @@ def run_pipeline(days=3):
     # get agora flowcam data
     try:
         print("Trying to upload Agora Flowcam data")
-        func_qc.db_upload_scripts.upload_divvar_data(
-            dfs=func_qc.df_creation_scripts.get_flowcam_data(
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_flowcam_data(
                 last_modified_date=last_modified_date, folder_id="121309822366"
             )
         )
