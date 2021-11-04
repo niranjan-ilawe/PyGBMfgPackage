@@ -2,6 +2,111 @@ import ezsheets
 import pandas as pd
 
 
+def is_float(x):
+    try:
+        float(x)
+    except ValueError:
+        return False
+    return True
+
+
+def read_guava_qc_data(file):
+    try:
+        xlsx = pd.ExcelFile(file)
+        try:
+            df_temp = pd.read_excel(xlsx, sheet_name="Summary - QC record", header=None)
+            operator = df_temp[df_temp[1] == "QC Operator"].iloc[0, 4]
+            date = df_temp[df_temp[1] == "QC date"].iloc[0, 4]
+            wo = df_temp[df_temp[1] == "Work Order #"].iloc[0, 4]
+            pn = df_temp[df_temp[1] == "10X Part Number"].iloc[0, 4]
+            lot = df_temp[df_temp[1] == "Lot Number"].iloc[0, 4]
+            desc = df_temp[df_temp[1] == "Product QC'ed"].iloc[0, 4]
+        except:
+            print(f"{file} could not be processed")
+        try:
+            df_temp1 = pd.read_excel(
+                xlsx, sheet_name="Analysis (Single Cell)", header=None
+            )
+            data_s = df_temp1.index[
+                df_temp1[1] == "Final Dispensed Strip Samples"
+            ].tolist()
+            data1 = df_temp1[data_s[0] + 2 :]
+            data1 = data1[[1, 2, 4, 5, 6]]
+            data1 = data1.rename(
+                columns={
+                    1: "plate",
+                    2: "strip",
+                    4: "pbeads",
+                    5: "gb_conc",
+                    6: "avg_conc_per_well",
+                }
+            )
+            data1["strip"] = data1["strip"].fillna(method="pad", limit=2)
+            data1["plate"] = data1["plate"].fillna(method="pad", limit=2)
+            data1 = data1[data1.pbeads.apply(lambda x: is_float(x))]
+            data1 = data1.dropna(subset=["pbeads"])
+        except:
+            data1 = pd.DataFrame()
+        try:
+            df_temp2 = pd.read_excel(
+                xlsx, sheet_name="Analysis (Single Cell) (2)", header=None
+            )
+            data_s = df_temp2.index[
+                df_temp2[1] == "Final Dispensed Strip Samples"
+            ].tolist()
+            data2 = df_temp2[data_s[0] + 2 :]
+            data2 = data2[[1, 2, 4, 5, 6]]
+            data2 = data2.rename(
+                columns={
+                    1: "plate",
+                    2: "strip",
+                    4: "pbeads",
+                    5: "gb_conc",
+                    6: "avg_conc_per_well",
+                }
+            )
+            data2["strip"] = data2["strip"].fillna(method="pad", limit=2)
+            data2["plate"] = data2["plate"].fillna(method="pad", limit=2)
+            data2 = data2[data2.pbeads.apply(lambda x: is_float(x))]
+            data2 = data2.dropna(subset=["pbeads"])
+        except:
+            data2 = pd.DataFrame()
+        try:
+            df_temp3 = pd.read_excel(
+                xlsx, sheet_name="Analysis (Single Cell) (3)", header=None
+            )
+            data_s = df_temp3.index[
+                df_temp3[1] == "Final Dispensed Strip Samples"
+            ].tolist()
+            data3 = df_temp3[data_s[0] + 2 :]
+            data3 = data3[[1, 2, 4, 5, 6]]
+            data3 = data3.rename(
+                columns={
+                    1: "plate",
+                    2: "strip",
+                    4: "pbeads",
+                    5: "gb_conc",
+                    6: "avg_conc_per_well",
+                }
+            )
+            data3["strip"] = data3["strip"].fillna(method="pad", limit=2)
+            data3["plate"] = data3["plate"].fillna(method="pad", limit=2)
+            data3 = data3[data3.pbeads.apply(lambda x: is_float(x))]
+            data3 = data3.dropna(subset=["pbeads"])
+        except:
+            data3 = pd.DataFrame()
+
+        data = data1.append(data2).append(data3)
+        data = data.assign(
+            pn=pn, pn_desc=desc, lot=lot, wo=wo, operator=operator, date=date
+        )
+    except:
+        print(f"{file} could not be processed")
+        data = pd.DataFrame()
+
+    return data
+
+
 def get_hsv_gsheet_data(
     sheet_id="10bRqRZUBQiQTNIHvMxaCJLk3J3Mjy1zha9kryr1-3L8",
 ):

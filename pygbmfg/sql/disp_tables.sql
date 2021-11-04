@@ -54,3 +54,18 @@ create table gbmfg.disp_mfgdata (
 	gb_vol_for_dispense numeric(12,4) null,
 	gb_vol_for_packaging numeric(12,4) null
 );
+
+drop table if exists gbmfg.disp_guava_data;
+create table gbmfg.disp_guava_data (
+	pn varchar(30) null,
+	pn_desc varchar(100) null,
+	lot varchar(30) null,
+	wo varchar(30) null,
+	operator varchar(30) null,
+	date varchar(30) null,
+	plate varchar(20) null,
+	strip varchar(20) null,
+	pbeads numeric(12,4) null,
+	gb_conc numeric(12,4) null,
+	avg_conc_per_well numeric(12,4) null
+);
