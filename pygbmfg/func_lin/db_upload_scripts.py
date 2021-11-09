@@ -9,8 +9,8 @@ def upload_ligation_lineage_data(dfs, username="cpdda", db_name="cpdda"):
 
     cur = conn.cursor()
     new_wo = tuple(dfs.wo.unique().astype(str))
-    cur.execute(f"DELETE FROM gbmfg.func_lineagedata WHERE wo IN {new_wo};")
+    cur.execute(f"DELETE FROM gbmfg.func_lig_lineagedata WHERE wo IN {new_wo};")
     conn.commit()
 
-    res = batch_upload_df(conn=conn, df=dfs, tablename="gbmfg.func_lineagedata")
+    res = batch_upload_df(conn=conn, df=dfs, tablename="gbmfg.func_lig_lineagedata")
     conn.commit()

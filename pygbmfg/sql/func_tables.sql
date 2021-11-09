@@ -54,3 +54,13 @@ CREATE TABLE gbmfg.func_flowcam_data (
 	data_name varchar(100) NOT NULL,
 	data_value float4 NULL
 );
+
+-- LIGATION LINEAGE DATA TABLE
+drop table if exists gbmfg.func_lig_lineagedata;
+create table gbmfg.func_lig_lineagedata (
+	pn varchar(30) null,
+	wo varchar(30) null,
+	mfg_date varchar(30) null,
+	lot varchar(30) null,
+    plate varchar(100) null
+);
