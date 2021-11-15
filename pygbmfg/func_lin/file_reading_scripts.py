@@ -1,6 +1,118 @@
 import pandas as pd
 
 
+def read_agora_lineage_br(file):
+    try:
+        xlsx = pd.ExcelFile(file, engine="openpyxl")
+        df_temp = pd.read_excel(xlsx, sheet_name="Summary", header=None)
+        lot_no = df_temp[df_temp[1] == "Lot Number"].iloc[0, 4]
+        wo = df_temp[df_temp[1].str.contains("Work Order", na=False)].iloc[0, 4]
+        mfg_date = df_temp[df_temp[1] == "Manufacturing Date"].iloc[0, 4]
+        pn = "2000114"
+        lig1 = df_temp[df_temp[2].str.contains("Agora A/S", na=False)].iloc[0, 6]
+        lig2 = df_temp[df_temp[2].str.contains("Agora B/D", na=False)].iloc[0, 6]
+        tmp = pd.DataFrame(
+            {
+                "pn": pn,
+                "wo": wo,
+                "ln": lot_no,
+                "mfg_date": mfg_date,
+                "lig1": lig1,
+                "lig2": lig2,
+            },
+            index=[0],
+        )
+    except:
+        print(f"### --- {file} skipped --- ###")
+        tmp = pd.DataFrame()
+
+    return tmp
+
+
+def read_orion_lineage_br(file):
+    try:
+        xlsx = pd.ExcelFile(file, engine="openpyxl")
+        df_temp = pd.read_excel(xlsx, sheet_name="Summary", header=None)
+        lot_no = df_temp[df_temp[1] == "Lot Number"].iloc[0, 4]
+        wo = df_temp[df_temp[1].str.contains("Work Order", na=False)].iloc[0, 4]
+        mfg_date = df_temp[df_temp[1] == "Manufacturing Date"].iloc[0, 4]
+        pn = "2000260"
+        lig1 = df_temp[df_temp[2].str.contains("Orion A/S", na=False)].iloc[0, 6]
+        lig2 = df_temp[df_temp[2].str.contains("Orion B/D", na=False)].iloc[0, 6]
+        tmp = pd.DataFrame(
+            {
+                "pn": pn,
+                "wo": wo,
+                "ln": lot_no,
+                "mfg_date": mfg_date,
+                "lig1": lig1,
+                "lig2": lig2,
+            },
+            index=[0],
+        )
+    except:
+        print(f"### --- {file} skipped --- ###")
+        tmp = pd.DataFrame()
+
+    return tmp
+
+
+def read_vdj_lineage_br(file):
+    try:
+        xlsx = pd.ExcelFile(file, engine="openpyxl")
+        df_temp = pd.read_excel(xlsx, sheet_name="Summary", header=None)
+        lot_no = df_temp[df_temp[1] == "Lot Number"].iloc[0, 4]
+        wo = df_temp[df_temp[1].str.contains("Work Order", na=False)].iloc[0, 4]
+        mfg_date = df_temp[df_temp[1] == "Manufacturing Date"].iloc[0, 4]
+        pn = "210170"
+        lig1 = df_temp[df_temp[2].str.contains("Ligation 1 Oligo", na=False)].iloc[0, 6]
+        lig2 = df_temp[df_temp[2].str.contains("Ligation 2 Oligo", na=False)].iloc[0, 6]
+        tmp = pd.DataFrame(
+            {
+                "pn": pn,
+                "wo": wo,
+                "ln": lot_no,
+                "mfg_date": mfg_date,
+                "lig1": lig1,
+                "lig2": lig2,
+            },
+            index=[0],
+        )
+    except:
+        print(f"### --- {file} skipped --- ###")
+        tmp = pd.DataFrame()
+
+    return tmp
+
+
+def read_mav_lineage_br(file):
+    try:
+        xlsx = pd.ExcelFile(file, engine="openpyxl")
+        df_temp = pd.read_excel(xlsx, sheet_name="Summary", header=None)
+        lot_no = df_temp[df_temp[1] == "Lot Number"].iloc[0, 4]
+        wo = df_temp[df_temp[1].str.contains("Work Order", na=False)].iloc[0, 4]
+        mfg_date = df_temp[df_temp[1] == "Manufacturing Date"].iloc[0, 4]
+        pn = "2000058"
+        lig1 = df_temp[df_temp[2].str.contains("Ligation 1 Oligo", na=False)].iloc[0, 6]
+        lig2 = df_temp[df_temp[2].str.contains("Ligation 2 Oligo", na=False)].iloc[0, 6]
+        tmp = pd.DataFrame(
+            {
+                "pn": pn,
+                "wo": wo,
+                "ln": lot_no,
+                "mfg_date": mfg_date,
+                "lig1": lig1,
+                "lig2": lig2,
+            },
+            index=[0],
+        )
+    except:
+        print(f"### --- {file} skipped --- ###")
+        tmp = pd.DataFrame()
+
+    return tmp
+
+
 def read_vdj_ligation_plate_br(file):
     try:
         xlsx = pd.ExcelFile(file, engine="openpyxl")

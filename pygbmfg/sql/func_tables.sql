@@ -64,3 +64,14 @@ create table gbmfg.func_lig_lineagedata (
 	lot varchar(30) null,
     plate varchar(100) null
 );
+
+-- FUNC LINEAGE DATA TABLE
+drop table if exists gbmfg.func_lineagedata;
+create table gbmfg.func_lineagedata (
+	pn varchar(30) null,
+	wo varchar(100) null,
+	ln varchar(30) null,
+	mfg_date varchar(30) null,
+	lig1 varchar(30) null,
+    lig2 varchar(30) null
+);
