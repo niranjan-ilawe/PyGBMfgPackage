@@ -1,3 +1,4 @@
+from datetime import date
 import ezsheets
 import pandas as pd
 
@@ -107,7 +108,7 @@ def read_guava_qc_data(file):
     return data
 
 
-def get_hsv_gsheet_data(
+def get_hsv_gsheet_data_old(
     sheet_id="10bRqRZUBQiQTNIHvMxaCJLk3J3Mjy1zha9kryr1-3L8",
 ):
 
@@ -156,5 +157,56 @@ def get_hsv_gsheet_data(
     nan_value = float("NaN")
     df.replace("", nan_value, inplace=True)
     df = df.dropna(subset=["pn"])
+    df["qc_date"] = pd.to_datetime(df["qc_date"], errors="coerce")
+
+    return df
+
+
+def get_hsv_gsheet_data_new(
+    sheet_id="1pXxjRi0AL5UTdt0lV8VpemN-Aqq7ZetVHtQABfaLVKg",
+):
+
+    ss = ezsheets.Spreadsheet(sheet_id)
+    sheet1 = ss["Fill Data"]
+
+    d = {
+        "chip_used": sheet1.getColumn(1),
+        "layout": sheet1.getColumn(2),
+        "plateau_ht": sheet1.getColumn(3),
+        "qc_date": sheet1.getColumn(4),
+        "run_name": sheet1.getColumn(5),
+        "chip_lot": sheet1.getColumn(6),
+        "novec_lot": sheet1.getColumn(7),
+        "bead_lot": sheet1.getColumn(8),
+        "oil_lot": sheet1.getColumn(9),
+        "eeprom": sheet1.getColumn(10),
+        "hsv": sheet1.getColumn(11),
+        "start_time": sheet1.getColumn(14),
+        "end_time": sheet1.getColumn(15),
+        "n_equal_0": sheet1.getColumn(16),
+        "n_equal_1": sheet1.getColumn(17),
+        "n_greater_1": sheet1.getColumn(18),
+        "ggf": sheet1.getColumn(19),
+        "ggf_cv": sheet1.getColumn(20),
+        "bif": sheet1.getColumn(21),
+        "bif_cv": sheet1.getColumn(22),
+        "cg_rate": sheet1.getColumn(23),
+        "tether_rate": sheet1.getColumn(24),
+        "drift": sheet1.getColumn(25),
+        "big_clump_count": sheet1.getColumn(26),
+        "bif_true_cv": sheet1.getColumn(27),
+        "small_clump_count": sheet1.getColumn(28),
+        "local_noise_cv": sheet1.getColumn(29),
+    }
+
+    df = pd.DataFrame(d)
+    # drop first row
+    df = df.iloc[1:, :]
+
+    # clean empty rows
+    nan_value = float("NaN")
+    df.replace("", nan_value, inplace=True)
+    df = df.dropna(subset=["chip_used"])
+    df["qc_date"] = pd.to_datetime(df["qc_date"], errors="coerce")
 
     return df

@@ -19,6 +19,18 @@ def run_pipeline(days=3):
     except:
         print("Maverick DivVar data upload failed")
 
+    # get SG maverick divvar data
+    try:
+        print("Trying to upload SG Maverick DivVar data")
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_sg_mav_divvar_data(
+                last_modified_date=last_modified_date
+            )
+        )
+        print("--SG Maverick DivVar upload done")
+    except:
+        print("SG Maverick DivVar data upload failed")
+
     # get vdj divvar data
     try:
         print("Trying to upload VDJ DivVar data")
@@ -30,6 +42,18 @@ def run_pipeline(days=3):
         print("--VDJ DivVar upload done")
     except:
         print("VDJ DivVar data upload failed")
+
+    # get SG vdj divvar data
+    try:
+        print("Trying to upload SG VDJ DivVar data")
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_sg_vdj_divvar_data(
+                last_modified_date=last_modified_date
+            )
+        )
+        print("--SG VDJ DivVar upload done")
+    except:
+        print("SG VDJ DivVar data upload failed")
 
     # get orion divvar data
     try:

@@ -1,36 +1,98 @@
-from pybox import get_box_client, box_ls, box_parse_excel
+from datetime import date, timedelta
+from pybox import box_create_df_from_files, get_box_client
 
-import pandas as pd
+from pygbmfg.disp_qc.file_reading_scripts import (
+    read_guava_qc_data,
+    get_hsv_gsheet_data_old,
+    get_hsv_gsheet_data_new,
+)
+from pygbmfg.common import _load_credentials, _clear_credentials
 
-from pygbmfg.disp_qc import file_reading_scripts
 
+def get_disp_guava_data(days=3):
 
-def get_guava_data(last_modified_date, mav_folder_id):
+    last_modified_date = str(date.today() - timedelta(days=days))
+    print(f"Looking for new data since {last_modified_date} ....")
 
     client = get_box_client()
 
-    files = box_ls(
-        client=client,
-        folder_id=mav_folder_id,
+    ## Get GB Dispensing MFG Data
+    guava = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112745334633",
         file_extension="xlsx",
-        pattern="Guava",
-        last_modified=last_modified_date,
+        file_pattern="Next GEM",
+        file_parsing_functions=read_guava_qc_data,
     )
 
-    total_no_files = len(files)
-    print(f"New files to read .. {total_no_files}")
+    guava = guava.append(
+        box_create_df_from_files(
+            box_client=client,
+            last_modified_date=last_modified_date,
+            box_folder_id="112745326233",
+            file_extension="xlsx",
+            file_pattern="Next GEM",
+            file_parsing_functions=read_guava_qc_data,
+        )
+    )
 
-    dfs1 = pd.DataFrame()
-    if total_no_files > 0:
-        ## READ NEW FILES ----------------------------------
-        for file_id in files.keys():
-            print(f"Parsing file: {files[file_id]}")
-            dfs1 = dfs1.append(
-                box_parse_excel(
-                    client=client,
-                    file_id=file_id,
-                    parsing_func=file_reading_scripts.read_guava_qc_data,
-                )
-            )
+    guava = guava.append(
+        box_create_df_from_files(
+            box_client=client,
+            last_modified_date=last_modified_date,
+            box_folder_id="115715039784",
+            file_extension="xlsx",
+            file_pattern="Next GEM",
+            file_parsing_functions=read_guava_qc_data,
+        )
+    )
 
-    return dfs1
+    guava = guava.append(
+        box_create_df_from_files(
+            box_client=client,
+            last_modified_date=last_modified_date,
+            box_folder_id="122324562169",
+            file_extension="xlsx",
+            file_pattern="Next GEM",
+            file_parsing_functions=read_guava_qc_data,
+        )
+    )
+
+    guava = guava.append(
+        box_create_df_from_files(
+            box_client=client,
+            last_modified_date=last_modified_date,
+            box_folder_id="136030428178",
+            file_extension="xlsx",
+            file_pattern="Next GEM",
+            file_parsing_functions=read_guava_qc_data,
+        )
+    )
+
+    guava = guava.append(
+        box_create_df_from_files(
+            box_client=client,
+            last_modified_date=last_modified_date,
+            box_folder_id="135944908979",
+            file_extension="xlsx",
+            file_pattern="Next GEM",
+            file_parsing_functions=read_guava_qc_data,
+        )
+    )
+
+    return guava
+
+
+def get_disp_hsv_data():
+    _load_credentials()
+    df1 = get_hsv_gsheet_data_old(
+        sheet_id="10bRqRZUBQiQTNIHvMxaCJLk3J3Mjy1zha9kryr1-3L8"
+    )
+    df2 = get_hsv_gsheet_data_new(
+        sheet_id="1pXxjRi0AL5UTdt0lV8VpemN-Aqq7ZetVHtQABfaLVKg"
+    )
+    df = df1.append(df2)
+    _clear_credentials()
+
+    return df

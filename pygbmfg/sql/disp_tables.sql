@@ -13,9 +13,9 @@ create table gbmfg.disp_hsv_data (
 	bead_lot varchar(20) null,
 	hsv varchar(20) null,
 	eeprom varchar(20) null,
-	is_pinned_gem boolean null,
-	is_clog_debris boolean null,
-	is_wetting_failure boolean null,
+	is_pinned_gem varchar(20) null,
+	is_clog_debris varchar(20) null,
+	is_wetting_failure varchar(20) null,
 	start_time varchar(30) null,
 	end_time varchar(30) null,
 	n_equal_0 numeric(12,4) null,
@@ -31,7 +31,9 @@ create table gbmfg.disp_hsv_data (
 	big_clump_count numeric(12,4) null,
 	bif_true_cv numeric(12,4) null,
 	small_clump_count numeric(12,4) null,
-	local_noise_cv numeric(12,4) null
+	local_noise_cv numeric(12,4) null,
+	plateau_ht numeric(12,4) null,
+	novec_lot varchar(20) null
 );
 
 drop table if exists gbmfg.disp_mfgdata;

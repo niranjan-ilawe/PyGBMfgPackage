@@ -6,7 +6,7 @@ create table gbmfg.func_mfgdata (
 	pn int null,
 	pn_desc varchar(50) null,
 	wo int null,
-	ln varchar(12) null,
+	ln varchar(30) null,
 	mfg_area varchar(30) null,
 	mfg_process varchar(30) null,
 	mfg_site varchar(10) null,
@@ -30,7 +30,8 @@ drop table if exists gbmfg.func_divvar_data;
 
 CREATE TABLE gbmfg.func_divvar_data (
 	pn varchar(20) NOT NULL,
-	"ln" varchar(50) NOT NULL,
+	"site" varchar(10) NULL,
+	"ln" varchar(100) NOT NULL,
 	wo varchar(50) NOT NULL,
 	"date" varchar(20) NOT NULL,
 	overhang varchar(10) NULL,
@@ -46,7 +47,7 @@ drop table if exists gbmfg.func_flowcam_data;
 
 CREATE TABLE gbmfg.func_flowcam_data (
 	pn varchar(20) NOT NULL,
-	"ln" varchar(50) NOT NULL,
+	"ln" varchar(100) NOT NULL,
 	wo varchar(50) NOT NULL,
 	"date" varchar(20) NOT NULL,
 	overhang varchar(10) NULL,

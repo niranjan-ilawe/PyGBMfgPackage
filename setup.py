@@ -1,4 +1,5 @@
 from setuptools import setup
+import setuptools
 
 
 def readme():
@@ -8,16 +9,17 @@ def readme():
 
 setup(
     name="pygbmfg",
-    version="0.1",
+    version="0.1.9000",
     description="Package for pulling GB Mfg and QC data",
-    url="",
+    url="https://github.com/niranjan-ilawe/PyGBMfgPackage",
     author="Niranjan Ilawe",
     author_email="niranjan.ilawe@10xgenomics.com",
     license="MIT",
-    packages=["pygbmfg"],
+    packages=setuptools.find_packages(),
     install_requires=["pandas", "pybox", "pydb", "ezsheets"],
     test_suite="nose.collector",
     tests_require=["nose"],
     include_package_data=True,
+    package_data={"": ["data/*.pickle", "data/*.json"]},
     zip_safe=False,
 )

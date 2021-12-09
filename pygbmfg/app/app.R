@@ -8,6 +8,7 @@ library(shiny)
 library(shinydashboard)
 library(tidyverse)
 library(plotly)
+library(DT)
 
 #### Connecting to sources #######
 con <- DBI::dbConnect(RPostgres::Postgres(),
@@ -16,6 +17,7 @@ con <- DBI::dbConnect(RPostgres::Postgres(),
                       password = ">TKd=lN7>jUiXTK.pSKV")
 
 yield_tbl <- dplyr::tbl(con, dbplyr::in_schema("gbmfg", "v_gb_yield"))
+lineage_tbl <- dplyr::tbl(con, dbplyr::in_schema("gbmfg", "v_gb_lineage"))
 #### End of connecting to sources ####
 
 #### Color Palette ####
@@ -52,8 +54,8 @@ ui <- dashboardPage(
     dashboardHeader(title = "Gel Bead Manufacturing"),
     dashboardSidebar(
         sidebarMenu(
-            menuItem("Yield", tabName = "yield", icon = icon("dashboard"))
-            #menuItem("Flowcam", tabName = "flowcam", icon = icon("project-diagram"))
+            menuItem("Yield", tabName = "yield", icon = icon("dashboard")),
+            menuItem("Genealogy", tabName = "gene", icon = icon("project-diagram"))
             #menuItem("Spec Details", tabName = "spec_detail", icon = icon("check-square")),
             #menuItem("Spec Summary", tabName = "spec_summary", icon = icon("check-square"))
         )
@@ -90,6 +92,16 @@ ui <- dashboardPage(
                     )
                   )
                 )
+            ),
+            tabItem(tabName = "gene",
+              fluidRow(
+                column(width = 12,
+                  box(width = NULL,
+                      collapsible = TRUE,
+                      div(style = 'overflow-y: scroll', DT::dataTableOutput('lineage_tbl'))
+                  )
+                )
+              )
             )
         )
     )
@@ -130,6 +142,13 @@ server <- function(input, output, session) {
       theme_classic() +
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
+  
+  lineage_df <- reactive({lineage_tbl %>% collect()})
+  
+  output$lineage_tbl <- renderDT(lineage_df(), filter = 'top', extensions = 'Buttons', selection = 'single', options = list(
+    autoWidth = TRUE,
+    dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')))
 }
 
 shinyApp(ui, server)
