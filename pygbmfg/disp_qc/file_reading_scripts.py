@@ -157,7 +157,8 @@ def get_hsv_gsheet_data_old(
     nan_value = float("NaN")
     df.replace("", nan_value, inplace=True)
     df = df.dropna(subset=["pn"])
-    df["qc_date"] = pd.to_datetime(df["qc_date"], errors="coerce")
+    # df = df.dropna(subset=["qc_date"])
+    # df["qc_date"] = pd.to_datetime(df["qc_date"], errors="coerce")
 
     return df
 
@@ -207,6 +208,7 @@ def get_hsv_gsheet_data_new(
     nan_value = float("NaN")
     df.replace("", nan_value, inplace=True)
     df = df.dropna(subset=["chip_used"])
-    df["qc_date"] = pd.to_datetime(df["qc_date"], errors="coerce")
+    # df = df.dropna(subset=["qc_date"])
+    # df["qc_date"] = pd.to_datetime(df["qc_date"], errors="coerce")
 
     return df
