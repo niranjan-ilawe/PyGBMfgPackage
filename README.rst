@@ -3,7 +3,7 @@ pygbmfg
 ``v0.1``
 
 Package contains all the relevant scripts to pull manufacturing and QC data from all the GB Manufacturing process areas. 
-The flagship functions of this package are the ``run_pipeline`` scripts that will read the files from Box or relevant locations, transform them into dataframes,
+The flagship functions of this package are the ``run_gb_pipeline`` scripts that will read the files from Box or relevant locations, transform them into dataframes,
 and push the dataframes to the CPPDA postgres database.
 
 The scripts are structured in the following way
@@ -12,41 +12,42 @@ pygbmfg
     * func_mfg
         - file_reading_scripts
         - df_creation_scripts
-        - db_upload_scripts
-        - run_pipeline
     * func_qc
         - file_reading_scripts
         - df_creation_scripts
-        - db_upload_scripts
-        - run_pipeline
     * disp_mfg
         - file_reading_scripts
 
 and so on for other areas.
 
-Basic use is as follows (for the GB Functionalization Manufacturing Data)
+The flagship function is run as follows
 
-    >>> import pygbmfg
-    >>> pygbmfg.func_mfg.run_pipeline.run_pipeline(days=3)
+    >>> from pygbmfg.pipeline import run_gb_pipeline
+    >>> run_gb_pipeline(days=3)
 
 This defaults to pulling the last 3 days worth of data. For pulling older data
 
-    >>> pygbmfg.func_mfg.run_pipeline.run_pipeline(days=90)
+    >>> run_gb_pipeline(days=90)
 
 pulls the last 90 days worth of data.
 
-Similarly for the Gb Functionalization QC Data
+You can also access individual manufacturing or QC data as follows
 
-    >>> pygbmfg.func_qc.run_pipeline.run_pipeline(days=90)
+    >>> from pygbmfg.disp_mfg.df_creation_scripts import get_disp_mfg_data
+    >>> from pydb import get_postgres_connection, batch_upload_df
+    >>> conn = get_postgres_connection(service_name="cpdda-postgres", username="cpdda", db_name="cpdda")
+    >>> df = get_disp_mfg_data(days=3)
+    >>> batch_upload_df(
+            conn=conn,
+            df=df,
+            tablename="gbmfg.disp_mfgdata",
+            insert_type="update",
+            key_cols="wo",
+        )
 
-For the GB Dispensing QC Data
+The above script only gets the Dispensing Mfg data for the last 3 days and uploads it to the relevent DB. 
 
-    >>> pygbmfg.disp_qc.run_pipeline.run_pipeline(days=90)
-
-You can also use any other function defined in the package directly
-
-    >>> df1 = pygbmfg.func_mfg.df_creation_scripts.get_maverick_data(last_modified_date="2021-01-01")
-    >>> pygbmfg.func_mfg.db_upload_scripts.upload_data(df1, username="cpdda", db_name="test")
+As above you can access any of the individual functions and run them independently or run the entire pipeline with the flagship function.
 
 Notes::
 ~~~~~~~~~~~~~
