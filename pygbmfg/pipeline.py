@@ -9,6 +9,10 @@ from pygbmfg.func_lin.df_creation_scripts import (
 from pygbmfg.func_mfg.df_creation_scripts import get_func_mfg_data
 from pygbmfg.func_qc.df_creation_scripts import get_divvar_data, get_flowcam_data
 from pygbmfg.gen_lin.df_creation_scripts import get_gen_lineage_data
+from pygbmfg.gen_mfg.file_reading_scripts import (
+    read_channel_yield_sheet,
+    read_sg_channel_yield_sheet,
+)
 
 
 def run_gb_pipeline(days=3):
@@ -136,5 +140,25 @@ def run_gb_pipeline(days=3):
         )
     except:
         print("---- Skipping Generation Lineage Data ----")
+
+    try:
+        print("---- Getting PLSTN Generation Yield Data ----")
+        df = read_channel_yield_sheet()
+        print("---- Uploading PLSTN Generation Yield Data ----")
+        batch_upload_df(
+            conn=conn, df=df, tablename="yield.gb_gen", insert_type="refresh"
+        )
+    except:
+        print("---- Skipping PLSTN Generation Yield Data ----")
+
+    try:
+        print("---- Getting SG Generation Yield Data ----")
+        df = read_sg_channel_yield_sheet()
+        print("---- Uploading SG Generation Yield Data ----")
+        batch_upload_df(
+            conn=conn, df=df, tablename="yield.gb_sg_gen", insert_type="refresh"
+        )
+    except:
+        print("---- Skipping SG Generation Yield Data ----")
 
     print("****** Pipeline Completed ******")
