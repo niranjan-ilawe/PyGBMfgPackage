@@ -7,7 +7,11 @@ from pygbmfg.func_lin.df_creation_scripts import (
     get_func_lineage_data,
 )
 from pygbmfg.func_mfg.df_creation_scripts import get_func_mfg_data
-from pygbmfg.func_qc.df_creation_scripts import get_divvar_data, get_flowcam_data
+from pygbmfg.func_qc.df_creation_scripts import (
+    get_divvar_data,
+    get_flowcam_data,
+    get_flowcam_std_data,
+)
 from pygbmfg.gen_lin.df_creation_scripts import get_gen_lineage_data
 from pygbmfg.gen_mfg.file_reading_scripts import (
     read_channel_yield_sheet,
@@ -111,7 +115,21 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Functionalization Flowcam Data -----")
+        print("---- Skipping Functionalization Flowcam QC Data -----")
+
+    try:
+        print("---- Getting Functionalization Flowcam Standards Data ----")
+        df1 = get_flowcam_std_data(days)
+        print("---- Uploading Functionalization Flowcam Standards Data ----")
+        batch_upload_df(
+            conn=conn,
+            df=df1,
+            tablename="gbmfg.func_flowcam_std_data",
+            insert_type="update",
+            key_cols="wo",
+        )
+    except:
+        print("---- Skipping Functionalization Flowcam Standards Data -----")
 
     try:
         print("---- Getting Functionalization DivVar QC Data ----")

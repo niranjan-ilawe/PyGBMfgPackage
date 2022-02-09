@@ -56,6 +56,21 @@ CREATE TABLE gbmfg.func_flowcam_data (
 	data_value float4 NULL
 );
 
+-- FLOWCAM STANDARDS DATA TABLE
+
+drop table if exists gbmfg.func_flowcam_std_data;
+
+CREATE TABLE gbmfg.func_flowcam_std_data (
+	pn varchar(20) NOT NULL,
+	"ln" varchar(100) NOT NULL,
+	wo varchar(50) NOT NULL,
+	"date" varchar(20) NOT NULL,
+	overhang varchar(10) NULL,
+	dia1 numeric NULL,
+	dia2 numeric NULL,
+	dia3 numeric NULL,
+);
+
 -- LIGATION LINEAGE DATA TABLE
 drop table if exists gbmfg.func_lig_lineagedata;
 create table gbmfg.func_lig_lineagedata (

@@ -567,3 +567,44 @@ def read_agora_divvar_file_revB(file):
         qc_metrics = pd.DataFrame()
 
     return qc_metrics
+
+
+def read_flowcam_standards_file(file):
+    try:
+        xlsx = pd.ExcelFile(file)
+        summary = pd.read_excel(xlsx, sheet_name="Summary - QC record")
+        try:
+            overhang = summary[
+                summary["Quality Control Method"] == "Overhang Part Number "
+            ].iloc[0][3]
+            if type(overhang) == int:
+                overhang = str(overhang)
+            overhang = re.findall(r"\d$", overhang)[0]
+        except:
+            overhang = "NA"
+        summary = summary[["Quality Control Method", "Unnamed: 2"]]
+        pn = summary[summary["Quality Control Method"] == "10X Part Number:"].iloc[0][1]
+        wo = summary[summary["Quality Control Method"] == "Work Order #:"].iloc[0][1]
+        ln = summary[summary["Quality Control Method"] == "Lot Number:"].iloc[0][1]
+        date = summary[summary["Quality Control Method"] == "QC date:"].iloc[0][1]
+
+        standards_data = pd.read_excel(xlsx, sheet_name="Raw Data (Standards)")
+        standards_data = standards_data[
+            ["Diameter (ESD)", "Diameter (ESD).1", "Diameter (ESD).2"]
+        ]
+        standards_data = standards_data.rename(
+            columns={
+                "Diameter (ESD)": "dia1",
+                "Diameter (ESD).1": "dia2",
+                "Diameter (ESD).2": "dia3",
+            }
+        )
+        standards_data = standards_data.dropna(axis=1, how="all")
+        standards_data = standards_data.assign(
+            pn=pn, ln=ln, date=date, wo=wo, overhang=overhang
+        )
+    except:
+        print(f"{file} could not be processed")
+        standards_data = pd.DataFrame()
+
+    return standards_data

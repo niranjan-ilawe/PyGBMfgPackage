@@ -1,6 +1,6 @@
 pygbmfg
 --------
-``v0.1``
+``v0.1.3.0``
 
 Package contains all the relevant scripts to pull manufacturing and QC data from all the GB Manufacturing process areas. 
 The flagship functions of this package are the ``run_gb_pipeline`` scripts that will read the files from Box or relevant locations, transform them into dataframes,

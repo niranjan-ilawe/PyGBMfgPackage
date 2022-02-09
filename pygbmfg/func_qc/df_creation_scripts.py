@@ -5,6 +5,7 @@ import pandas as pd
 
 from pygbmfg.func_qc.file_reading_scripts import (
     read_flowcam_file,
+    read_flowcam_standards_file,
     read_agora_divvar_file_revB,
     read_mav_divvar_file,
     read_vdj_divvar_file_revL,
@@ -60,7 +61,29 @@ def get_flowcam_data(days=3):
         file_parsing_functions=read_flowcam_file,
     )
 
-    dfs1 = mav.append(vdj.append(orion.append(agora)))
+    ## Get VDJ Goose Flowcam Data
+    vdj_goose = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="141540150435",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_file,
+    )
+
+    ## Get Mav Goose Flowcam Data
+    mav_goose = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="142980374443",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_file,
+    )
+
+    dfs1 = mav.append(
+        vdj.append(orion.append(agora.append(vdj_goose.append(mav_goose))))
+    )
     if dfs1.shape[0] > 0:
         dfs1.date = dfs1.date.astype(str)
 
@@ -183,6 +206,82 @@ def get_divvar_data(days=3):
     df = mav.append(mav_sg.append(vdj.append(vdj_sg.append(orion.append(agora)))))
 
     return df
+
+
+def get_flowcam_std_data(days=3):
+
+    last_modified_date = str(date.today() - timedelta(days=days))
+    print(f"Looking for new data since {last_modified_date} ....")
+
+    client = get_box_client()
+
+    ## Get Maverick Flowcam Data
+    mav = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112743475504",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_standards_file,
+    )
+
+    ## Get VDJ Flowcam Data
+    vdj = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112736689427",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_standards_file,
+    )
+
+    ## Get Orion Flowcam Data
+    orion = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112528373429",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_standards_file,
+    )
+
+    ## Get Agora Flowcam Data
+    agora = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="121309822366",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_standards_file,
+    )
+
+    ## Get VDJ Goose Flowcam Data
+    vdj_goose = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="141540150435",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_standards_file,
+    )
+
+    ## Get Mav Goose Flowcam Data
+    mav_goose = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="142980374443",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_standards_file,
+    )
+
+    dfs1 = mav.append(
+        vdj.append(orion.append(agora.append(vdj_goose.append(mav_goose))))
+    )
+    if dfs1.shape[0] > 0:
+        dfs1.date = dfs1.date.astype(str)
+
+    return dfs1
 
 
 # def get_flowcam_data(last_modified_date, folder_id):

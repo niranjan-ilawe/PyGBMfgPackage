@@ -127,4 +127,28 @@ def run_pipeline(days=3):
     except:
         print("Agora Flowcam data upload failed")
 
+    # get vdj goose flowcam data
+    try:
+        print("Trying to upload VDJ Goose Flowcam data")
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_flowcam_data(
+                last_modified_date=last_modified_date, folder_id="141540150435"
+            )
+        )
+        print("--VDJ Goose Flowcam upload done")
+    except:
+        print("VDJ Goose Flowcam data upload failed")
+
+    # get mav goose flowcam data
+    try:
+        print("Trying to upload Mav Goose Flowcam data")
+        db_upload_scripts.upload_divvar_data(
+            dfs=df_creation_scripts.get_flowcam_data(
+                last_modified_date=last_modified_date, folder_id="142980374443"
+            )
+        )
+        print("--Mav Goose Flowcam upload done")
+    except:
+        print("Mav Goose Flowcam data upload failed")
+
     return 0
