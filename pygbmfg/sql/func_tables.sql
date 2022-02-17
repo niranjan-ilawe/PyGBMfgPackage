@@ -53,7 +53,8 @@ CREATE TABLE gbmfg.func_flowcam_data (
 	overhang varchar(10) NULL,
 	"family" varchar(30) NULL,
 	data_name varchar(100) NOT NULL,
-	data_value float4 NULL
+	data_value float4 NULL,
+	"site" varchar(10) NULL
 );
 
 -- FLOWCAM STANDARDS DATA TABLE
@@ -66,6 +67,7 @@ CREATE TABLE gbmfg.func_flowcam_std_data (
 	wo varchar(50) NOT NULL,
 	"date" varchar(20) NOT NULL,
 	overhang varchar(10) NULL,
+	"site" varchar(10) NULL,
 	dia1 numeric NULL,
 	dia2 numeric NULL,
 	dia3 numeric NULL,

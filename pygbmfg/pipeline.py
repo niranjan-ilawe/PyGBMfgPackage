@@ -120,6 +120,10 @@ def run_gb_pipeline(days=3):
     try:
         print("---- Getting Functionalization Flowcam Standards Data ----")
         df1 = get_flowcam_std_data(days)
+        # df1 = df1[~df1["dia1"].str.contains("Diameter", na=False)]
+        # df1 = df1[~df1["dia1"].str.contains("Sample", na=False)]
+        # df1 = df1[~df1["dia2"].str.contains("Sample", na=False)]
+        # df1 = df1[~df1["dia3"].str.contains("Sample", na=False)]
         print("---- Uploading Functionalization Flowcam Standards Data ----")
         batch_upload_df(
             conn=conn,

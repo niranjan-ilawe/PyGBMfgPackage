@@ -435,35 +435,35 @@ def get_func_mfg_data(days=3):
 
     # def get_agora_data(last_modified_date, mav_folder_id="110057752779"):
 
-    client = get_box_client()
+    # client = get_box_client()
 
-    files = box_ls(
-        client=client,
-        folder_id=mav_folder_id,
-        file_extension="xlsx",
-        pattern="ATAC",
-        last_modified=last_modified_date,
-    )
+    # files = box_ls(
+    #     client=client,
+    #     folder_id=mav_folder_id,
+    #     file_extension="xlsx",
+    #     pattern="ATAC",
+    #     last_modified=last_modified_date,
+    # )
 
-    total_no_files = len(files)
-    print(f"New files to read .. {total_no_files}")
+    # total_no_files = len(files)
+    # print(f"New files to read .. {total_no_files}")
 
-    dfs2 = pd.DataFrame()
-    if total_no_files > 0:
-        ## READ NEW FILES ----------------------------------
-        for file_id in files.keys():
-            print(f"Parsing file: {files[file_id]}")
-            dfs2 = dfs2.append(
-                box_read_excel_file(
-                    client=client,
-                    file_id=file_id,
-                    parsing_func=file_reading_scripts.read_agora_br,
-                )
-            )
-        dfs2 = dfs2.dropna(subset=["wo", "ln"])
-        dfs2 = dfs2.drop_duplicates(subset=["wo"])
-        dfs2 = dfs2.assign(
-            mfg_site="CA", mfg_area="GB MFG", mfg_process="GB Functionalization"
-        )
+    # dfs2 = pd.DataFrame()
+    # if total_no_files > 0:
+    #     ## READ NEW FILES ----------------------------------
+    #     for file_id in files.keys():
+    #         print(f"Parsing file: {files[file_id]}")
+    #         dfs2 = dfs2.append(
+    #             box_read_excel_file(
+    #                 client=client,
+    #                 file_id=file_id,
+    #                 parsing_func=file_reading_scripts.read_agora_br,
+    #             )
+    #         )
+    #     dfs2 = dfs2.dropna(subset=["wo", "ln"])
+    #     dfs2 = dfs2.drop_duplicates(subset=["wo"])
+    #     dfs2 = dfs2.assign(
+    #         mfg_site="CA", mfg_area="GB MFG", mfg_process="GB Functionalization"
+    #     )
 
-    return dfs2
+    # return dfs2

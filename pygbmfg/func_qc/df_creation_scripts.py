@@ -31,6 +31,24 @@ def get_flowcam_data(days=3):
         file_parsing_functions=read_flowcam_file,
     )
 
+    if mav.shape[0] > 0:
+        mav.date = mav.date.astype(str)
+        mav = mav.assign(site="CA")
+
+    ## Get SG Maverick Flowcam Data
+    mav_sg = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="137080509572",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_file,
+    )
+
+    if mav_sg.shape[0] > 0:
+        mav_sg.date = mav_sg.date.astype(str)
+        mav_sg = mav_sg.assign(site="SG")
+
     ## Get VDJ Flowcam Data
     vdj = box_create_df_from_files(
         box_client=client,
@@ -40,6 +58,24 @@ def get_flowcam_data(days=3):
         file_pattern="FlowCam",
         file_parsing_functions=read_flowcam_file,
     )
+
+    if vdj.shape[0] > 0:
+        vdj.date = vdj.date.astype(str)
+        vdj = vdj.assign(site="CA")
+
+    ## Get SG VDJ Flowcam Data
+    vdj_sg = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="146648435004",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_file,
+    )
+
+    if vdj_sg.shape[0] > 0:
+        vdj_sg.date = vdj_sg.date.astype(str)
+        vdj_sg = vdj_sg.assign(site="SG")
 
     ## Get Orion Flowcam Data
     orion = box_create_df_from_files(
@@ -51,6 +87,10 @@ def get_flowcam_data(days=3):
         file_parsing_functions=read_flowcam_file,
     )
 
+    if orion.shape[0] > 0:
+        orion.date = orion.date.astype(str)
+        orion = orion.assign(site="CA")
+
     ## Get Agora Flowcam Data
     agora = box_create_df_from_files(
         box_client=client,
@@ -60,6 +100,10 @@ def get_flowcam_data(days=3):
         file_pattern="FlowCam",
         file_parsing_functions=read_flowcam_file,
     )
+
+    if agora.shape[0] > 0:
+        agora.date = agora.date.astype(str)
+        agora = agora.assign(site="CA")
 
     ## Get VDJ Goose Flowcam Data
     vdj_goose = box_create_df_from_files(
@@ -71,6 +115,10 @@ def get_flowcam_data(days=3):
         file_parsing_functions=read_flowcam_file,
     )
 
+    if vdj_goose.shape[0] > 0:
+        vdj_goose.date = vdj_goose.date.astype(str)
+        vdj_goose = vdj_goose.assign(site="CA")
+
     ## Get Mav Goose Flowcam Data
     mav_goose = box_create_df_from_files(
         box_client=client,
@@ -81,8 +129,16 @@ def get_flowcam_data(days=3):
         file_parsing_functions=read_flowcam_file,
     )
 
+    if mav_goose.shape[0] > 0:
+        mav_goose.date = mav_goose.date.astype(str)
+        mav_goose = mav_goose.assign(site="CA")
+
     dfs1 = mav.append(
-        vdj.append(orion.append(agora.append(vdj_goose.append(mav_goose))))
+        vdj.append(
+            orion.append(
+                agora.append(vdj_goose.append(mav_goose.append(mav_sg.append(vdj_sg))))
+            )
+        )
     )
     if dfs1.shape[0] > 0:
         dfs1.date = dfs1.date.astype(str)
@@ -225,7 +281,25 @@ def get_flowcam_std_data(days=3):
         file_parsing_functions=read_flowcam_standards_file,
     )
 
-    ## Get VDJ Flowcam Data
+    if mav.shape[0] > 0:
+        mav.date = mav.date.astype(str)
+        mav = mav.assign(site="CA")
+
+    ## Get SG Maverick Flowcam Data
+    mav_sg = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="137080509572",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_standards_file,
+    )
+
+    if mav_sg.shape[0] > 0:
+        mav_sg.date = mav_sg.date.astype(str)
+        mav_sg = mav_sg.assign(site="SG")
+
+        ## Get VDJ Flowcam Data
     vdj = box_create_df_from_files(
         box_client=client,
         last_modified_date=last_modified_date,
@@ -234,6 +308,24 @@ def get_flowcam_std_data(days=3):
         file_pattern="FlowCam",
         file_parsing_functions=read_flowcam_standards_file,
     )
+
+    if vdj.shape[0] > 0:
+        vdj.date = vdj.date.astype(str)
+        vdj = vdj.assign(site="CA")
+
+    ## Get SG VDJ Flowcam Data
+    vdj_sg = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="146648435004",
+        file_extension="xlsx",
+        file_pattern="FlowCam",
+        file_parsing_functions=read_flowcam_standards_file,
+    )
+
+    if vdj_sg.shape[0] > 0:
+        vdj_sg.date = vdj_sg.date.astype(str)
+        vdj_sg = vdj_sg.assign(site="SG")
 
     ## Get Orion Flowcam Data
     orion = box_create_df_from_files(
@@ -245,6 +337,10 @@ def get_flowcam_std_data(days=3):
         file_parsing_functions=read_flowcam_standards_file,
     )
 
+    if orion.shape[0] > 0:
+        orion.date = orion.date.astype(str)
+        orion = orion.assign(site="CA")
+
     ## Get Agora Flowcam Data
     agora = box_create_df_from_files(
         box_client=client,
@@ -254,6 +350,10 @@ def get_flowcam_std_data(days=3):
         file_pattern="FlowCam",
         file_parsing_functions=read_flowcam_standards_file,
     )
+
+    if agora.shape[0] > 0:
+        agora.date = agora.date.astype(str)
+        agora = agora.assign(site="CA")
 
     ## Get VDJ Goose Flowcam Data
     vdj_goose = box_create_df_from_files(
@@ -265,6 +365,10 @@ def get_flowcam_std_data(days=3):
         file_parsing_functions=read_flowcam_standards_file,
     )
 
+    if vdj_goose.shape[0] > 0:
+        vdj_goose.date = vdj_goose.date.astype(str)
+        vdj_goose = vdj_goose.assign(site="CA")
+
     ## Get Mav Goose Flowcam Data
     mav_goose = box_create_df_from_files(
         box_client=client,
@@ -275,8 +379,16 @@ def get_flowcam_std_data(days=3):
         file_parsing_functions=read_flowcam_standards_file,
     )
 
+    if mav_goose.shape[0] > 0:
+        mav_goose.date = mav_goose.date.astype(str)
+        mav_goose = mav_goose.assign(site="CA")
+
     dfs1 = mav.append(
-        vdj.append(orion.append(agora.append(vdj_goose.append(mav_goose))))
+        vdj.append(
+            orion.append(
+                agora.append(vdj_goose.append(mav_goose.append(mav_sg.append(vdj_sg))))
+            )
+        )
     )
     if dfs1.shape[0] > 0:
         dfs1.date = dfs1.date.astype(str)
