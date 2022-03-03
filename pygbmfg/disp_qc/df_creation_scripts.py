@@ -17,68 +17,96 @@ def get_disp_guava_data(days=3):
     client = get_box_client()
 
     ## Get GB Dispensing MFG Data
-    guava = box_create_df_from_files(
+    df1 = box_create_df_from_files(
         box_client=client,
         last_modified_date=last_modified_date,
         box_folder_id="112745334633",
         file_extension="xlsx",
-        file_pattern="Next GEM",
+        file_pattern="Guava",
         file_parsing_functions=read_guava_qc_data,
     )
+    if df1.shape[0] > 0:
+        df1 = df1.assign(site="CA")
 
-    guava = guava.append(
-        box_create_df_from_files(
-            box_client=client,
-            last_modified_date=last_modified_date,
-            box_folder_id="112745326233",
-            file_extension="xlsx",
-            file_pattern="Next GEM",
-            file_parsing_functions=read_guava_qc_data,
-        )
+    df2 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112745326233",
+        file_extension="xlsx",
+        file_pattern="Guava",
+        file_parsing_functions=read_guava_qc_data,
     )
+    if df2.shape[0] > 0:
+        df2 = df2.assign(site="CA")
 
-    guava = guava.append(
-        box_create_df_from_files(
-            box_client=client,
-            last_modified_date=last_modified_date,
-            box_folder_id="115715039784",
-            file_extension="xlsx",
-            file_pattern="Next GEM",
-            file_parsing_functions=read_guava_qc_data,
-        )
+    df3 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="115715039784",
+        file_extension="xlsx",
+        file_pattern="Guava",
+        file_parsing_functions=read_guava_qc_data,
     )
+    if df3.shape[0] > 0:
+        df3 = df3.assign(site="CA")
 
-    guava = guava.append(
-        box_create_df_from_files(
-            box_client=client,
-            last_modified_date=last_modified_date,
-            box_folder_id="122324562169",
-            file_extension="xlsx",
-            file_pattern="Next GEM",
-            file_parsing_functions=read_guava_qc_data,
-        )
+    df4 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="122324562169",
+        file_extension="xlsx",
+        file_pattern="Guava",
+        file_parsing_functions=read_guava_qc_data,
     )
+    if df4.shape[0] > 0:
+        df4 = df4.assign(site="CA")
 
-    guava = guava.append(
-        box_create_df_from_files(
-            box_client=client,
-            last_modified_date=last_modified_date,
-            box_folder_id="136030428178",
-            file_extension="xlsx",
-            file_pattern="Next GEM",
-            file_parsing_functions=read_guava_qc_data,
-        )
+    df5 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="136030428178",
+        file_extension="xlsx",
+        file_pattern="Guava",
+        file_parsing_functions=read_guava_qc_data,
     )
+    if df5.shape[0] > 0:
+        df5 = df5.assign(site="CA")
 
-    guava = guava.append(
-        box_create_df_from_files(
-            box_client=client,
-            last_modified_date=last_modified_date,
-            box_folder_id="135944908979",
-            file_extension="xlsx",
-            file_pattern="Next GEM",
-            file_parsing_functions=read_guava_qc_data,
-        )
+    df6 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="135944908979",
+        file_extension="xlsx",
+        file_pattern="Guava",
+        file_parsing_functions=read_guava_qc_data,
+    )
+    if df6.shape[0] > 0:
+        df6 = df6.assign(site="CA")
+
+    df7 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="148802605060",
+        file_extension="xlsx",
+        file_pattern="Guava",
+        file_parsing_functions=read_guava_qc_data,
+    )
+    if df7.shape[0] > 0:
+        df7 = df7.assign(site="SG")
+
+    df8 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="139290694966",
+        file_extension="xlsx",
+        file_pattern="Guava",
+        file_parsing_functions=read_guava_qc_data,
+    )
+    if df8.shape[0] > 0:
+        df8 = df8.assign(site="SG")
+
+    guava = df1.append(
+        df2.append(df3.append(df4.append(df5.append(df6.append(df7.append(df8))))))
     )
 
     return guava

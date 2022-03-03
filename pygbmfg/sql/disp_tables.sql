@@ -69,5 +69,6 @@ create table gbmfg.disp_guava_data (
 	strip varchar(20) null,
 	pbeads numeric(12,4) null,
 	gb_conc numeric(12,4) null,
-	avg_conc_per_well numeric(12,4) null
+	avg_conc_per_well numeric(12,4) null,
+	"site" varchar(10) null
 );

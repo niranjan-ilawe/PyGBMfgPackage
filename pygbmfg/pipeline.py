@@ -1,3 +1,5 @@
+from termcolor import colored
+
 from pydb import get_postgres_connection, batch_upload_df
 
 from pygbmfg.disp_mfg.df_creation_scripts import get_disp_mfg_data
@@ -17,20 +19,35 @@ from pygbmfg.gen_mfg.file_reading_scripts import (
     read_channel_yield_sheet,
     read_sg_channel_yield_sheet,
 )
+from pygbmfg.kit_qc.df_creation_scripts import get_funcseq_data
 
 
 def run_gb_pipeline(days=3):
 
-    print("****** Pipeline Starting ******")
+    print(colored("****** Pipeline Starting ******", "green"))
 
     conn = get_postgres_connection(
         service_name="cpdda-postgres", username="cpdda", db_name="cpdda"
     )
 
+    print("---- Getting Kitting QC Data ----")
+    try:
+        df = get_funcseq_data(days)
+        print(colored("---- Uploading Kitting QC Data ----", "green"))
+        batch_upload_df(
+            conn=conn,
+            df=df,
+            tablename="gbmfg.kit_funcseq_data",
+            insert_type="update",
+            key_cols="wo",
+        )
+    except:
+        print(colored("---- Skipping Kitting QC Data ----", "yellow"))
+
     print("---- Getting Dispensing Mfg Data ----")
     try:
         df = get_disp_mfg_data(days)
-        print("---- Uploading Dispensing Mfg Data ----")
+        print(colored("---- Uploading Dispensing Mfg Data ----", "green"))
         batch_upload_df(
             conn=conn,
             df=df,
@@ -39,11 +56,12 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Dispensing Mfg Data ----")
+        print(colored("---- Skipping Dispensing Mfg Data ----", "yellow"))
 
     print("---- Getting Dispensing QC Data ----")
     try:
         df1 = get_disp_guava_data(days)
+        print(colored("---- Uploading Dispensing QC Data ----", "green"))
         batch_upload_df(
             conn=conn,
             df=df1,
@@ -52,20 +70,22 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Guava Data")
+        print(colored("---- Skipping Guava Data", "yellow"))
 
+    print("---- Getting Dispensing HSV Data ----")
     try:
         df2 = get_disp_hsv_data()
+        print(colored("---- Uploading Dispensing HSV Data ----", "green"))
         batch_upload_df(
             conn=conn, df=df2, tablename="gbmfg.disp_hsv_data", insert_type="refresh"
         )
     except:
-        print("---- Skipping HSV Data ----")
+        print(colored("---- Skipping HSV Data ----", "yellow"))
 
     print("---- Getting Functionalization Lineage Data ----")
     try:
         df1 = get_func_lineage_data(days)
-        print("---- Uploading Functionalization Lineage Data ----")
+        print(colored("---- Uploading Functionalization Lineage Data ----", "green"))
         batch_upload_df(
             conn=conn,
             df=df1,
@@ -74,11 +94,16 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Functionalization Lineage Data -----")
+        print(colored("---- Skipping Functionalization Lineage Data -----", "yellow"))
 
+    print("---- Getting Functionalization Ligation Lineage Data ----")
     try:
         df2 = get_func_ligation_lineage_data(days)
-        print("---- Uploading Functionalization Ligation Lineage Data ----")
+        print(
+            colored(
+                "---- Uploading Functionalization Ligation Lineage Data ----", "green"
+            )
+        )
         batch_upload_df(
             conn=conn,
             df=df2,
@@ -87,12 +112,16 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Functionalization Ligation Lineage Data -----")
+        print(
+            colored(
+                "---- Skipping Functionalization Ligation Lineage Data -----", "yellow"
+            )
+        )
 
+    print("---- Getting Functionalization Mfg Data ----")
     try:
-        print("---- Getting Functionalization Mfg Data ----")
         df = get_func_mfg_data(days)
-        print("---- Uploading Functionalization Mfg Data ----")
+        print(colored("---- Uploading Functionalization Mfg Data ----", "green"))
         batch_upload_df(
             conn=conn,
             df=df,
@@ -101,12 +130,12 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Functionalization Mfg Data ----")
+        print(colored("---- Skipping Functionalization Mfg Data ----", "yellow"))
 
+    print("---- Getting Functionalization Flowcam QC Data ----")
     try:
-        print("---- Getting Functionalization Flowcam QC Data ----")
         df1 = get_flowcam_data(days)
-        print("---- Uploading Functionalization Flowcam QC Data ----")
+        print(colored("---- Uploading Functionalization Flowcam QC Data ----", "green"))
         batch_upload_df(
             conn=conn,
             df=df1,
@@ -115,16 +144,22 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Functionalization Flowcam QC Data -----")
+        print(
+            colored("---- Skipping Functionalization Flowcam QC Data -----", "yellow")
+        )
 
+    print("---- Getting Functionalization Flowcam Standards Data ----")
     try:
-        print("---- Getting Functionalization Flowcam Standards Data ----")
         df1 = get_flowcam_std_data(days)
         # df1 = df1[~df1["dia1"].str.contains("Diameter", na=False)]
         # df1 = df1[~df1["dia1"].str.contains("Sample", na=False)]
         # df1 = df1[~df1["dia2"].str.contains("Sample", na=False)]
         # df1 = df1[~df1["dia3"].str.contains("Sample", na=False)]
-        print("---- Uploading Functionalization Flowcam Standards Data ----")
+        print(
+            colored(
+                "---- Uploading Functionalization Flowcam Standards Data ----", "green"
+            )
+        )
         batch_upload_df(
             conn=conn,
             df=df1,
@@ -133,12 +168,16 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Functionalization Flowcam Standards Data -----")
+        print(
+            colored(
+                "---- Skipping Functionalization Flowcam Standards Data -----", "yellow"
+            )
+        )
 
+    print("---- Getting Functionalization DivVar QC Data ----")
     try:
-        print("---- Getting Functionalization DivVar QC Data ----")
         df2 = get_divvar_data(days)
-        print("---- Uploading Functionalization DivVar QC Data ----")
+        print(colored("---- Uploading Functionalization DivVar QC Data ----", "green"))
         batch_upload_df(
             conn=conn,
             df=df2,
@@ -147,12 +186,12 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Functionalization DivVar Data -----")
+        print(colored("---- Skipping Functionalization DivVar Data -----", "yellow"))
 
+    print("---- Getting Generation Lineage Data ----")
     try:
-        print("---- Getting Generation Lineage Data ----")
         df = get_gen_lineage_data(days)
-        print("---- Uploading Generation Lineage Data ----")
+        print(colored("---- Uploading Generation Lineage Data ----", "green"))
         batch_upload_df(
             conn=conn,
             df=df,
@@ -161,26 +200,26 @@ def run_gb_pipeline(days=3):
             key_cols="wo",
         )
     except:
-        print("---- Skipping Generation Lineage Data ----")
+        print(colored("---- Skipping Generation Lineage Data ----", "yellow"))
 
+    print("---- Getting PLSTN Generation Yield Data ----")
     try:
-        print("---- Getting PLSTN Generation Yield Data ----")
         df = read_channel_yield_sheet()
-        print("---- Uploading PLSTN Generation Yield Data ----")
+        print(colored("---- Uploading PLSTN Generation Yield Data ----", "green"))
         batch_upload_df(
             conn=conn, df=df, tablename="yield.gb_gen", insert_type="refresh"
         )
     except:
-        print("---- Skipping PLSTN Generation Yield Data ----")
+        print(colored("---- Skipping PLSTN Generation Yield Data ----", "yellow"))
 
+    print("---- Getting SG Generation Yield Data ----")
     try:
-        print("---- Getting SG Generation Yield Data ----")
         df = read_sg_channel_yield_sheet()
-        print("---- Uploading SG Generation Yield Data ----")
+        print(colored("---- Uploading SG Generation Yield Data ----", "green"))
         batch_upload_df(
             conn=conn, df=df, tablename="yield.gb_sg_gen", insert_type="refresh"
         )
     except:
-        print("---- Skipping SG Generation Yield Data ----")
+        print(colored("---- Skipping SG Generation Yield Data ----", "yellow"))
 
-    print("****** Pipeline Completed ******")
+    print(colored("****** Pipeline Completed ******", "green"))

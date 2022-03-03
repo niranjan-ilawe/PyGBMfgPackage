@@ -9,14 +9,14 @@ def readme():
 
 setup(
     name="pygbmfg",
-    version="0.1.3.2",
+    version="0.1.3.4",
     description="Package for pulling GB Mfg and QC data",
     url="https://github.com/niranjan-ilawe/PyGBMfgPackage",
     author="Niranjan Ilawe",
     author_email="niranjan.ilawe@10xgenomics.com",
     license="MIT",
     packages=setuptools.find_packages(),
-    install_requires=["pandas", "pybox", "pydb", "ezsheets"],
+    install_requires=["pandas", "pybox", "pydb", "ezsheets", "termcolor"],
     test_suite="nose.collector",
     tests_require=["nose"],
     include_package_data=True,
