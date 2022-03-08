@@ -9,7 +9,7 @@ def readme():
 
 setup(
     name="pygbmfg",
-    version="0.1.3.4",
+    version="0.1.3.5",
     description="Package for pulling GB Mfg and QC data",
     url="https://github.com/niranjan-ilawe/PyGBMfgPackage",
     author="Niranjan Ilawe",

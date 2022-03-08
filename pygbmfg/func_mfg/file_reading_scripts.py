@@ -6,7 +6,9 @@ def read_maverick_br(file):
         xlsx = pd.ExcelFile(file, engine="openpyxl")
         # Extracting WO's
         df_temp = pd.read_excel(xlsx, sheet_name="Labels", header=None)
-        unfunc_wo = df_temp[df_temp[1] == "Unfunctionalized GB Work Order #"].iloc[0, 2]
+        unfunc_wo = df_temp[df_temp[1] == "Unfunctionalized GB Work Order #"].iloc[
+            0, 2
+        ]  # extract this from the summary sheet
         oh1_wo = df_temp[df_temp[1] == " Overhang 1 Work Order #"].iloc[0, 2]
         oh2_wo = df_temp[df_temp[1] == " Overhang 2 Work Order #"].iloc[0, 2]
         oh3_wo = df_temp[df_temp[1] == " Overhang 3 Work Order #"].iloc[0, 2]
