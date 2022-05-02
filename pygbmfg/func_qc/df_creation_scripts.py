@@ -393,6 +393,10 @@ def get_flowcam_std_data(days=3):
     if dfs1.shape[0] > 0:
         dfs1.date = dfs1.date.astype(str)
 
+    dfs1 = dfs1[pd.to_numeric(dfs1['dia1'], errors='coerce').notnull()]
+    dfs1 = dfs1[pd.to_numeric(dfs1['dia2'], errors='coerce').notnull()]
+    dfs1 = dfs1[pd.to_numeric(dfs1['dia3'], errors='coerce').notnull()]
+
     return dfs1
 
 
