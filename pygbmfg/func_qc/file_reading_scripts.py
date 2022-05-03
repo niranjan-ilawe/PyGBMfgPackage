@@ -2,6 +2,52 @@ import pandas as pd
 import re
 
 
+def read_probehyb_file(file):
+    try:
+        xlsx = pd.ExcelFile(file)
+        data = pd.read_excel(xlsx, sheet_name="Summary - QC records", header=None)
+
+        # extract lot metadata
+        pn = data[data[1].str.contains("10X Part", na=False)].iloc[0, 2]
+        overhang_pn = data[data[1].str.contains("Overhang Part", na=False)].iloc[0, 2]
+        lot = data[data[1].str.contains("Lot Number", na=False)].iloc[0, 2]
+        wo = data[data[1].str.contains("Work Order", na=False)].iloc[0, 2]
+        qc_by = data[data[1].str.contains("QC'ed by", na=False)].iloc[0, 2]
+        # convert python datetime object to formatted date string
+        qc_date = (
+            data[data[1].str.contains("QC date", na=False)]
+            .iloc[0, 2]
+            .strftime("%m-%d-%Y")
+        )
+
+        # QC metrics
+        # first get start and end indices to metrics box
+        met_start = data.index[data[1].str.contains("Percent in box", na=False)][0]
+        met_end = data.index[data[1].str.contains("Disposition", na=False)][0]
+
+        # extract rows in that box
+        met = data.iloc[met_start:met_end]
+
+        # select relevant cols and rename them
+        met = met[[1, 2]]
+        met = met.rename(columns={1: "data_name", 2: "data_value"})
+
+        # filter rows with empty values
+        met = met.dropna(subset=["data_value"])
+
+        # assign lot meta data
+        met = met.assign(
+            pn=pn, overhang_pn=overhang_pn, lot=lot, wo=wo, qc_by=qc_by, qc_date=qc_date
+        )
+
+    except ValueError as err:
+        if "Worksheet" in err.args[0]:
+            print(f"Error: 'Summary - QC records sheet' not found in '{file}'")
+        met = pd.DataFrame()
+
+    return met
+
+
 def read_flowcam_file(file):
     try:
         xlsx = pd.ExcelFile(file)

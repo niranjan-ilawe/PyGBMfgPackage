@@ -1,6 +1,9 @@
 pygbmfg
 --------
-``v0.1.4``
+``v0.1.5``
+
+### New to v0.1.5
+- Added probe hyb QC data pulling
 
 Package contains all the relevant scripts to pull manufacturing and QC data from all the GB Manufacturing process areas. 
 The flagship functions of this package are the ``run_gb_pipeline`` scripts that will read the files from Box or relevant locations, transform them into dataframes,

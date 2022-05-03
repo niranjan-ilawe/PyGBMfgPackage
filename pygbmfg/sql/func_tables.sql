@@ -93,3 +93,16 @@ create table gbmfg.func_lineagedata (
 	lig1 varchar(30) null,
     lig2 varchar(30) null
 );
+
+-- FUNC PROBE HYB DATA
+drop table if exists gbmfg.func_probehyb_data;
+create table gbmfg.func_probehyb_data (
+	pn varchar(30) null,
+	overhang_pn varchar(30) null,
+	lot varchar(100),
+	wo varchar(20),
+	qc_by varchar(50),
+	qc_date varchar(30),
+	data_name varchar(150),
+	data_value numeric null
+);

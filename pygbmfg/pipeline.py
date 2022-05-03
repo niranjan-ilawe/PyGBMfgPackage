@@ -13,6 +13,7 @@ from pygbmfg.func_qc.df_creation_scripts import (
     get_divvar_data,
     get_flowcam_data,
     get_flowcam_std_data,
+    get_probehyb_data,
 )
 from pygbmfg.gen_lin.df_creation_scripts import get_gen_lineage_data
 from pygbmfg.gen_mfg.file_reading_scripts import (
@@ -187,6 +188,22 @@ def run_gb_pipeline(days=3):
         )
     except:
         print(colored("---- Skipping Functionalization DivVar Data -----", "yellow"))
+
+    print("---- Getting Functionalization ProbeHyb QC Data ----")
+    try:
+        df2 = get_probehyb_data(days)
+        print(
+            colored("---- Uploading Functionalization ProbeHyb QC Data ----", "green")
+        )
+        batch_upload_df(
+            conn=conn,
+            df=df2,
+            tablename="gbmfg.func_probehyb_data",
+            insert_type="update",
+            key_cols="wo",
+        )
+    except:
+        print(colored("---- Skipping Functionalization ProbeHyb Data -----", "yellow"))
 
     print("---- Getting Generation Lineage Data ----")
     try:

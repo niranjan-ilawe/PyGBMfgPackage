@@ -11,7 +11,69 @@ from pygbmfg.func_qc.file_reading_scripts import (
     read_vdj_divvar_file_revL,
     read_orion_divvar_file_revB,
     read_vdj_divvar_file_revJ,
+    read_probehyb_file,
 )
+
+
+def get_probehyb_data(days=3):
+
+    last_modified_date = str(date.today() - timedelta(days=days))
+    print(f"Looking for new data since {last_modified_date} ....")
+
+    client = get_box_client()
+
+    ## Get Maverick Probe Hyb Data
+    mav = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112743475504",
+        file_extension="xlsx",
+        file_pattern="Probe",
+        file_parsing_functions=read_probehyb_file,
+    )
+
+    if mav.shape[0] > 0:
+        mav = mav.assign(site="CA")
+
+    mav_sg = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112743475504",
+        file_extension="xlsx",
+        file_pattern="Probe",
+        file_parsing_functions=read_probehyb_file,
+    )
+
+    if mav_sg.shape[0] > 0:
+        mav_sg = mav_sg.assign(site="SG")
+
+    ## Get VDJ Probe Hyb Data
+    vdj = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112736689427",
+        file_extension="xlsx",
+        file_pattern="Probe",
+        file_parsing_functions=read_probehyb_file,
+    )
+
+    if vdj.shape[0] > 0:
+        vdj = vdj.assign(site="CA")
+
+    vdj_sg = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="146648435004",
+        file_extension="xlsx",
+        file_pattern="Probe",
+        file_parsing_functions=read_probehyb_file,
+    )
+
+    if vdj_sg.shape[0] > 0:
+        vdj_sg = vdj_sg.assign(site="SG")
+
+    df = mav.append(vdj.append(mav_sg.append(vdj_sg)))
+    return df
 
 
 def get_flowcam_data(days=3):
@@ -393,9 +455,9 @@ def get_flowcam_std_data(days=3):
     if dfs1.shape[0] > 0:
         dfs1.date = dfs1.date.astype(str)
 
-    dfs1 = dfs1[pd.to_numeric(dfs1['dia1'], errors='coerce').notnull()]
-    dfs1 = dfs1[pd.to_numeric(dfs1['dia2'], errors='coerce').notnull()]
-    dfs1 = dfs1[pd.to_numeric(dfs1['dia3'], errors='coerce').notnull()]
+    dfs1 = dfs1[pd.to_numeric(dfs1["dia1"], errors="coerce").notnull()]
+    dfs1 = dfs1[pd.to_numeric(dfs1["dia2"], errors="coerce").notnull()]
+    dfs1 = dfs1[pd.to_numeric(dfs1["dia3"], errors="coerce").notnull()]
 
     return dfs1
 
