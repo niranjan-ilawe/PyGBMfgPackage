@@ -1,3 +1,4 @@
+from datetime import datetime
 import pandas as pd
 import re
 
@@ -14,11 +15,13 @@ def read_probehyb_file(file):
         wo = data[data[1].str.contains("Work Order", na=False)].iloc[0, 2]
         qc_by = data[data[1].str.contains("QC'ed by", na=False)].iloc[0, 2]
         # convert python datetime object to formatted date string
-        qc_date = (
-            data[data[1].str.contains("QC date", na=False)]
-            .iloc[0, 2]
-            .strftime("%m-%d-%Y")
-        )
+        qc_date = data[data[1].str.contains("QC date", na=False)].iloc[0, 2]
+
+        # SG sometimes stores date in "26-Jan-22" format. extracting that data
+        if isinstance(qc_date, str):
+            qc_date = datetime.strptime(qc_date, '%d-%b-%y')
+
+        qc_date = qc_date.strftime("%m-%d-%Y")
 
         # QC metrics
         # first get start and end indices to metrics box
