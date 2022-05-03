@@ -103,6 +103,7 @@ create table gbmfg.func_probehyb_data (
 	wo varchar(20),
 	qc_by varchar(50),
 	qc_date varchar(30),
+	site varchar(10),
 	data_name varchar(150),
 	data_value numeric null
 );
