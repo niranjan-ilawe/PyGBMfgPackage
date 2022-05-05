@@ -764,11 +764,11 @@ def read_vdj_divvar_file_revM(file):
         mets = data.index[
             data[2].str.contains("Fraction of Barcodes", na=False)
         ].to_list()
+        
         # loop through the 4 overhangs
         df = pd.DataFrame()
         for i in range(0, 4):
             # extract metrics relevant rows using above boundaries
-            print(i)
             d1 = data[int(mets[i]) : int(mets[i]) + 5]
             d1 = d1[[2, 4, 7]]
             d1 = d1.rename(columns={2: "data_name", 4: "data_value", 7: "disposition"})
@@ -788,7 +788,3 @@ def read_vdj_divvar_file_revM(file):
         df = pd.DataFrame()
 
     return df
-
-
-file = "vdj_sg.xlsx"
-read_vdj_divvar_file_revM(file)
