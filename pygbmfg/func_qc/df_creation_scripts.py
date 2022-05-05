@@ -8,7 +8,9 @@ from pygbmfg.func_qc.file_reading_scripts import (
     read_flowcam_standards_file,
     read_agora_divvar_file_revB,
     read_mav_divvar_file,
+    read_mav_divvar_file_revM,
     read_vdj_divvar_file_revL,
+    read_vdj_divvar_file_revM,
     read_orion_divvar_file_revB,
     read_vdj_divvar_file_revJ,
     read_probehyb_file,
@@ -216,7 +218,7 @@ def get_divvar_data(days=3):
     client = get_box_client()
 
     ## Get Maverick Divvar Data
-    mav = box_create_df_from_files(
+    mav1 = box_create_df_from_files(
         box_client=client,
         last_modified_date=last_modified_date,
         box_folder_id="112743475504",
@@ -225,12 +227,27 @@ def get_divvar_data(days=3):
         file_parsing_functions=read_mav_divvar_file,
     )
 
-    if mav.shape[0] > 0:
-        mav.date = mav.date.astype(str)
-        mav = mav.assign(site="CA")
+    if mav1.shape[0] > 0:
+        mav1.date = mav1.date.astype(str)
+        mav1 = mav1.assign(site="CA")
+
+    ## Get Maverick Divvar Data
+    mav2 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112743475504",
+        file_extension="xlsx",
+        file_pattern="DivVar",
+        file_parsing_functions=read_mav_divvar_file_revM,
+    )
+
+    if mav2.shape[0] > 0:
+        mav2 = mav2.assign(site="CA")
+
+    mav = mav1.append(mav2)
 
     ## Get SG Maverick Divvar Data
-    mav_sg = box_create_df_from_files(
+    mav_sg1 = box_create_df_from_files(
         box_client=client,
         last_modified_date=last_modified_date,
         box_folder_id="137080509572",
@@ -239,9 +256,23 @@ def get_divvar_data(days=3):
         file_parsing_functions=read_mav_divvar_file,
     )
 
-    if mav_sg.shape[0] > 0:
-        mav_sg.date = mav_sg.date.astype(str)
-        mav_sg = mav_sg.assign(site="SG")
+    if mav_sg1.shape[0] > 0:
+        mav_sg1.date = mav_sg1.date.astype(str)
+        mav_sg1 = mav_sg1.assign(site="SG")
+
+    mav_sg2 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="137080509572",
+        file_extension="xlsx",
+        file_pattern="DivVar",
+        file_parsing_functions=read_mav_divvar_file_revM,
+    )
+
+    if mav_sg2.shape[0] > 0:
+        mav_sg2 = mav_sg2.assign(site="SG")
+
+    mav_sg = mav_sg1.append(mav_sg2)
 
     ## Get VDJ Divvar Data
     vdj_1 = box_create_df_from_files(
@@ -262,7 +293,16 @@ def get_divvar_data(days=3):
         file_parsing_functions=read_vdj_divvar_file_revL,
     )
 
-    vdj = vdj_1.append(vdj_2)
+    vdj_3 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="112736689427",
+        file_extension="xlsx",
+        file_pattern="DivVar",
+        file_parsing_functions=read_vdj_divvar_file_revM,
+    )
+
+    vdj = vdj_1.append(vdj_2.append(vdj_3))
 
     if vdj.shape[0] > 0:
         vdj.date = vdj.date.astype(str)
@@ -287,7 +327,16 @@ def get_divvar_data(days=3):
         file_parsing_functions=read_vdj_divvar_file_revL,
     )
 
-    vdj_sg = vdj_sg_1.append(vdj_sg_2)
+    vdj_sg_3 = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="146648435004",
+        file_extension="xlsx",
+        file_pattern="DivVar",
+        file_parsing_functions=read_vdj_divvar_file_revM,
+    )
+
+    vdj_sg = vdj_sg_1.append(vdj_sg_2.append(vdj_sg_3))
 
     if vdj_sg.shape[0] > 0:
         vdj_sg.date = vdj_sg.date.astype(str)

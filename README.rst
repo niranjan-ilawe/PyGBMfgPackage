@@ -2,6 +2,9 @@ pygbmfg
 --------
 ``v0.1.5``
 
+### New to v0.1.6
+- Added DivVar rev M QC data ingestion script
+
 ### New to v0.1.5
 - Added probe hyb QC data pulling
 

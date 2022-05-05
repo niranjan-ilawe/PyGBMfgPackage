@@ -1,5 +1,7 @@
+from datetime import datetime
 import pandas as pd
 import re
+import numpy as np
 
 
 def read_probehyb_file(file):
@@ -654,3 +656,137 @@ def read_flowcam_standards_file(file):
         standards_data = pd.DataFrame()
 
     return standards_data
+
+
+def read_mav_divvar_file_revM(file):
+    try:
+        xlsx = pd.ExcelFile(file)
+        data = pd.read_excel(xlsx, sheet_name="Summary-QC records", header=None)
+        # store the 4 overhangs in a list
+        overhang = (
+            data[data[2].str.contains("Overhang Part", na=False)].iloc[0, 4].split(",")
+        )
+        lot = data[data[2].str.contains("Lot Number", na=False)].iloc[0, 4]
+        # store the 4 WOs in a list
+        wo = data[data[2].str.contains("Work Order", na=False)].iloc[0, 4].split(",")
+        operator = data[data[2].str.contains("Operator", na=False)].iloc[0, 4]
+        qc_date = data[data[2].str.contains("QC date", na=False)].iloc[0, 4]
+
+        # if qc_date is a datetime object change it to str with fixed format
+        # so that can be easily uploaded to the DB
+        if isinstance(qc_date, datetime):
+            qc_date = qc_date.strftime("%m-%d-%y")
+
+        # Extract metrics for each family for each overhang
+        poly = data.index[data[2].str.contains("Poly", na=False)].to_list()
+        v6 = data.index[data[2].str.contains("x22_v2_6", na=False)].tolist()
+        v8 = data.index[data[2].str.contains("v22_v2_8", na=False)].tolist()
+
+        # loop through the 4 overhangs
+        df = pd.DataFrame()
+        for i in range(0, 4):
+            # extract poly relevant rows using above boundaries
+            d1 = data[int(poly[i]) : int(v6[i]) - 1]
+            d1 = d1[[2, 4, 7]]
+            d1 = d1[d1[4] != "Test Value"]
+            d1 = d1.rename(columns={2: "data_name", 4: "data_value", 7: "disposition"})
+            d1 = d1.assign(
+                overhang=re.findall("-(\d)", overhang[i])[0],
+                ln=lot,
+                wo=wo[i],
+                date=qc_date,
+                pn=re.findall("(\d+)-", overhang[i])[0],
+                family="Poly (dT)",
+            )
+
+            # extract x22 relevant rows using above boundaries
+            d2 = data[int(v6[i]) : int(v8[i]) - 1]
+            d2 = d2[[2, 4, 7]]
+            d2 = d2[d2[4] != "Test Value"]
+            d2 = d2.rename(columns={2: "data_name", 4: "data_value", 7: "disposition"})
+            d2 = d2.assign(
+                overhang=re.findall("-(\d)", overhang[i])[0],
+                ln=lot,
+                wo=wo[i],
+                date=qc_date,
+                pn=re.findall("(\d+)-", overhang[i])[0],
+                family="x22_v2_6",
+            )
+
+            # extract v22 relevant rows using above boundaries
+            d3 = data[int(v8[i]) : int(v8[i]) + 6]
+            d3 = d3[[2, 4, 7]]
+            d3 = d3[d3[4] != "Test Value"]
+            d3 = d3.rename(columns={2: "data_name", 4: "data_value", 7: "disposition"})
+            d3 = d3.assign(
+                overhang=re.findall("-(\d)", overhang[i])[0],
+                ln=lot,
+                wo=wo[i],
+                date=qc_date,
+                pn=re.findall("(\d+)-", overhang[i])[0],
+                family="v22_v2_8",
+            )
+
+            df = df.append(d1.append(d2.append(d3)))
+
+    except:
+        print(f"Error while reading {file}")
+        df = pd.DataFrame()
+
+    return df
+
+    # fill empty rows with above value. in this specific case fill the
+    # d1 = d1.fillna(method = "ffill")
+
+
+def read_vdj_divvar_file_revM(file):
+    try:
+        xlsx = pd.ExcelFile(file)
+        data = pd.read_excel(xlsx, sheet_name="Summary-QC records", header=None)
+        # store the 4 overhangs in a list
+        overhang = (
+            data[data[2].str.contains("Overhang Part", na=False)].iloc[0, 4].split(",")
+        )
+        lot = data[data[2].str.contains("Lot Number", na=False)].iloc[0, 4]
+        # store the 4 WOs in a list
+        wo = data[data[2].str.contains("Work Order", na=False)].iloc[0, 4].split(",")
+        operator = data[data[2].str.contains("Operator", na=False)].iloc[0, 4]
+        qc_date = data[data[2].str.contains("QC date", na=False)].iloc[0, 4]
+
+        # if qc_date is a datetime object change it to str with fixed format
+        # so that can be easily uploaded to the DB
+        if isinstance(qc_date, datetime):
+            qc_date = qc_date.strftime("%m-%d-%y")
+
+        # Extract metrics for each family for each overhang
+        mets = data.index[
+            data[2].str.contains("Fraction of Barcodes", na=False)
+        ].to_list()
+        # loop through the 4 overhangs
+        df = pd.DataFrame()
+        for i in range(0, 4):
+            # extract metrics relevant rows using above boundaries
+            print(i)
+            d1 = data[int(mets[i]) : int(mets[i]) + 5]
+            d1 = d1[[2, 4, 7]]
+            d1 = d1.rename(columns={2: "data_name", 4: "data_value", 7: "disposition"})
+            d1 = d1.assign(
+                overhang=re.findall("-(\d)", overhang[i])[0],
+                ln=lot,
+                wo=wo[i],
+                date=qc_date,
+                pn=re.findall("(\d+)-", overhang[i])[0],
+                family="SC 5' Metric(s)",
+            )
+
+            df = df.append(d1)
+
+    except:
+        print(f"Error while reading {file}")
+        df = pd.DataFrame()
+
+    return df
+
+
+file = "vdj_sg.xlsx"
+read_vdj_divvar_file_revM(file)
