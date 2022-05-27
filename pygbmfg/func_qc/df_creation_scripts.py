@@ -62,6 +62,19 @@ def get_probehyb_data(days=3):
     if vdj.shape[0] > 0:
         vdj = vdj.assign(site="CA")
 
+    ## Get VDJ HV Probe Hyb Data
+    vdj_hv = box_create_df_from_files(
+        box_client=client,
+        last_modified_date=last_modified_date,
+        box_folder_id="141540150435",
+        file_extension="xlsx",
+        file_pattern="Probe",
+        file_parsing_functions=read_probehyb_file,
+    )
+
+    if vdj_hv.shape[0] > 0:
+        vdj_hv = vdj_hv.assign(site="CA")
+
     vdj_sg = box_create_df_from_files(
         box_client=client,
         last_modified_date=last_modified_date,
@@ -74,7 +87,7 @@ def get_probehyb_data(days=3):
     if vdj_sg.shape[0] > 0:
         vdj_sg = vdj_sg.assign(site="SG")
 
-    df = mav.append(vdj.append(mav_sg.append(vdj_sg)))
+    df = mav.append(vdj.append(mav_sg.append(vdj_sg.append(vdj_hv))))
     return df
 
 
