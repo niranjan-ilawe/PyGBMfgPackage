@@ -5,7 +5,7 @@ create table gbmfg.disp_hsv_data (
 	pn varchar(30),
 	wo varchar(30),
 	qc_operator varchar(30) null,
-	run_name varchar(100) null,
+	run_name varchar(150) null,
 	chip_used varchar(50) null,
 	layout varchar(20) null,
 	chip_lot varchar(20) null,
